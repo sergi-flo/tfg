@@ -23,10 +23,23 @@ def dic_to_data(d):
   return x,y
 
 
-def mutliplot(d,do):
-  pass
+def multiplot(d,do):
+  fig, axs =plt.subplots(len(d),len(do), sharex=True, sharey=True)
+  c=0
+  for e in d:
+    c1=c
+    for e1 in do:
+      axs.flat[c1].set(xlabel=e1,ylabel=e)
+      c1+=1
+    c=c1
+  for ax in axs.flat:
+    ax.label_outer()
+  plt.show()
 
 if  __name__=='__main__':
-  x=['a','b','r','t','g']
-  y=[7,9,6,3,12]
-  graphic(x,y)
+  #x=['a','b','r','t','g']
+  #y=[7,9,6,3,12]
+  #graphic(x,y)
+  d={'Amplitude': [], 'Oscillations': [], 'Inst freq': []}
+  do={'Amplitude': [], 'Oscillations': [], 'Inst freq': []}
+  multiplot(d,do)

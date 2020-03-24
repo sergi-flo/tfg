@@ -36,14 +36,15 @@ def pand_sensors():
   data=pd.read_excel('hfos.xlsx')
   for row in data[data.columns[0]]:
     list_row=row.split(',')
-    if 'Outside' in  list_row:
-      dic_out['Amplitude'].append(list_row[17])
-      dic_out['Oscillations'].append(list_row[12])
-      dic_out['Inst freq'].append(list_row[20])
-    else:
-      dic['Amplitude'].append(list_row[17])
-      dic['Oscillations'].append(list_row[12])
-      dic['Inst freq'].append(list_row[20])
+    if 'PAT_1' in list_row:
+      if 'Outside' in  list_row:
+        dic_out['Amplitude'].append(list_row[17])
+        dic_out['Oscillations'].append(list_row[12])
+        dic_out['Inst freq'].append(list_row[20])
+      else:
+        dic['Amplitude'].append(list_row[17])
+        dic['Oscillations'].append(list_row[12])
+        dic['Inst freq'].append(list_row[20])
   #print(len(dic), '\n\n', len(dic_out))
   return dic,dic_out
 

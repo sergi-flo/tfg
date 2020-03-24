@@ -28,8 +28,13 @@ def multiplot(d,do):
   c=0
   for e in d:
     c1=c
-    for e1 in do:
+    for e1 in d:
       axs.flat[c1].set(xlabel=e1,ylabel=e)
+      #if d[e]==d[e1]:
+      #  axs[c,c1].bar(d[e],d[e1],'tab:orange')
+      #  axs[c,c1].bar(do[e],do[e1],'tab:blue')
+      axs[c,c1].scatter(d[e],d[e1],'tab:orange')
+      axs[c,c1].scatter(do[e],do[e1],'tab:blue')
       c1+=1
     c=c1
   for ax in axs.flat:

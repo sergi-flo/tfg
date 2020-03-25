@@ -92,14 +92,14 @@ body {
   color: #6c7182;
 }
 
-#demo-explanation > div > div:nth-child(2) > div > p:nth-child(11) > img {
+#web-explanation > div > div:nth-child(2) > div > p:nth-child(11) > img {
   width: 40%;
 }
-#graph-3d-plot-tsne > div > div > svg:nth-child(1) {
+#graph-3d-plot > div > div > svg:nth-child(1) {
   background-color: #f2f3f4 !important;
 }
 
-#graph-3d-plot-tsne > div > div > svg:nth-child(1) > g.bglayer > rect {
+#graph-3d-plot > div > div > svg:nth-child(1) > g.bglayer > rect {
   fill: #f2f3f4 !important;
 }
 
@@ -116,7 +116,7 @@ body {
   fill: #f2f3f4 !important;
 }
 
-#graph-3d-plot-tsne > div > div > svg:nth-child(1) > g.bglayer > rect {
+#graph-3d-plot > div > div > svg:nth-child(1) > g.bglayer > rect {
   fill: #f2f3f4;
   fill-opacity: 1;
   stroke-width: 0;
@@ -126,7 +126,7 @@ body {
   color: #6c7182;
 }
 
-#graph-3d-plot-tsne
+#graph-3d-plot
   > div
   > div
   > svg:nth-child(3)
@@ -137,7 +137,7 @@ body {
   fill: #f2f3f4 !important;
 }
 
-#demo-explanation #learn-more-button {
+#web-explanation #learn-more-button {
   text-transform: none;
   font-size: 14px;
   font-weight: 400;
@@ -187,18 +187,18 @@ body {
     margin: 0;
   }
 
-  #demo-explanation {
+  #web-explanation {
     text-align: center;
     padding-right: 0 !important;
   }
 
-  #demo-explanation > div > div:nth-child(1) {
+  #web-explanation > div > div:nth-child(1) {
     padding-right: 7%;
   }
-  #demo-explanation > div:nth-child(2) {
+  #web-explanation > div:nth-child(2) {
     padding-right: 15%;
   }
-  #demo-explanation > div > div:nth-child(3) {
+  #web-explanation > div > div:nth-child(3) {
     padding-right: 15%;
   }
 }

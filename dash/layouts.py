@@ -3,6 +3,7 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+from dash.dependencies import Input, Output
 
 def Card(children, **kawrgs):
     return html.Section(children, className="card-style")
@@ -102,7 +103,40 @@ def create_layout(app):
                             dcc.Graph(id="graph-3d-plot", style={"height": "98vh"})
                         ],
                     ),
+                    html.Div(
+                        className="three columns",
+                        id="data-info",
+                        children=[
+                            Card(
+                                style={"padding": "5px"},
+                                children=[
+                                    html.Div(
+                                        id="div-plot-click-message",
+                                        style={
+                                            "text-align": "center",
+                                            "margin-bottom": "7px",
+                                            "font-weight": "bold",
+                                        },
+                                    ),
+                                    html.Div(id="div-plot-click-point"),
+                                ],
+                            )
+                        ],
+                    ),
                 ],
             ),
         ],
     )
+
+
+def demo_callbacks(app):
+    @app.callback(
+        Output("div-plot-click-message", "children"),
+        [Input("graph-3d-plot", "clickData"), Input("dropdown-graphic-type", "value")],
+    )
+    def display_click_message(clickData, dataset):
+        # Displays message shown when a point in the graph is clicked, depending whether it's an image or word
+        if clickData:
+            return None
+        else:
+            return "Click a data point on the scatter plot to display its corresponding image."

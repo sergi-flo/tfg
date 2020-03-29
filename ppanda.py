@@ -2,12 +2,17 @@
 
 import pandas as pd
 
+def load_panda():
+  d=pd.read_csv('excel/hfos.csv')
+  labels=[i for i in d]
+  return d[labels[1:]]
+
 def pand():
   out,noOut= 0,0
-  data=pd.read_excel('hfos.xlsx')
+  d=load_panda()
   #print(data[data.columns[0]])
   #print(data)
-  for e in data[data.columns[0]]:
+  for e in d['Zone']:
     if 'Outside' in e:
       out +=1
     else:
@@ -18,35 +23,15 @@ def pand():
 
 def pand_sensores():
   dic={}
-  data=pd.read_excel('hfos.xlsx')
-  for row in data[data.columns[0]]:
-    list_row=row.split(',')
-    if 'PAT_1' in  list_row:
-      if list_row[-2] in dic:
-        dic[list_row[-2]].append(list_row[17])
+  d=load_panda()
+  for amplitude, patient, channel  in zip(d['Amplitude'],d['Patient'],d['Channel']):
+    if 'PAT_1' in patient:
+      if channel in dic:
+        dic[channel].append(amplitude)
       else:
-        dic[list_row[-2]]=[list_row[17]]
-  #print(dic, len(dic))
+        dic[channel] = [amplitude]
+  print(dic, len(dic))
   return dic
-  
-
-def pand_sensors():
-  dic={'Amplitude':[],'Oscillations':[],'Inst freq':[]}
-  dic_out={'Amplitude':[],'Oscillations':[],'Inst freq':[]}
-  data=pd.read_excel('hfos.xlsx')
-  for row in data[data.columns[0]]:
-    list_row=row.split(',')
-    if 'PAT_1' in list_row:
-      if 'Outside' in  list_row:
-        dic_out['Amplitude'].append(list_row[17])
-        dic_out['Oscillations'].append(list_row[12])
-        dic_out['Inst freq'].append(list_row[20])
-      else:
-        dic['Amplitude'].append(list_row[17])
-        dic['Oscillations'].append(list_row[12])
-        dic['Inst freq'].append(list_row[20])
-  #print(len(dic), '\n\n', len(dic_out))
-  return dic,dic_out
 
 if __name__=='__main__':
-  pand_sensors()
+  pand_sensores()

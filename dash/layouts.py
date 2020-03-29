@@ -5,6 +5,11 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 
+import pandas as pd
+import plotly.graph_objects as go
+
+data=pd.read_csv("excel/csvp.csv")
+
 def Card(children, **kawrgs):
     return html.Section(children, className="card-style")
 
@@ -61,37 +66,16 @@ def create_layout(app):
                                         clearable=False,
                                         options=[
                                             {
-                                                "label": "2D Graphics",
-                                                "value": "2D",
+                                                "label": "Sepal",
+                                                "value": "sepal",
                                             },
                                             {
-                                                "label": "3D Graphics",
-                                                "value": "3D",
+                                                "label": "Petal",
+                                                "value": "petal",
                                             },
                                         ],
-                                        placeholder="Select type of grapphic",
+                                        placeholder="Select type of graphic",
                                         value="2D",
-                                    ),
-                                    dcc.Dropdown(
-                                        id="dropdown-dataset",
-                                        searchable=False,
-                                        clearable=False,
-                                        options=[
-                                            {
-                                                "label": "Patient 1",
-                                                "value": "PAT_1",
-                                            },
-                                            {
-                                                "label": "Patient 2",
-                                                "value": "PAT_2",
-                                            },
-                                            {
-                                                "label": "Patient 3",
-                                                "value": "PAT_3",
-                                            },
-                                        ],
-                                        placeholder="Select Patient",
-                                        value="PAT_1",
                                     ),
                                 ],
                             ),
@@ -100,7 +84,7 @@ def create_layout(app):
                     html.Div(
                         className="six columns",
                         children=[
-                            dcc.Graph(id="graph-3d-plot", style={"height": "98vh"})
+                            dcc.Graph(id="graph-plot", style={"height": "98vh"})
                         ],
                     ),
                     html.Div(
@@ -131,12 +115,61 @@ def create_layout(app):
 
 def demo_callbacks(app):
     @app.callback(
+        Output("graph-plot","figure"),
+        [Input("dropdown-graphic-type","value")]
+    )
+    def update_figure(selected_patient):
+        if selected_patient == 'petal': 
+            figure= go.Figure(
+                data = go.Scattergl(
+                x = data["Petal width"],
+                y = data["Petal length"],
+                mode = "markers",
+                )
+            )
+        else:
+            figure= go.Figure(
+                data=go.Scattergl(
+                x = data["Sepal width"],
+                y = data["Sepal length"],
+                text = data["Species"],
+                mode = "markers",
+                )
+            )
+        return figure
+
+    @app.callback(
         Output("div-plot-click-message", "children"),
-        [Input("graph-3d-plot", "clickData"), Input("dropdown-graphic-type", "value")],
+        [Input("graph-plot", "clickData"), Input("dropdown-graphic-type", "value")],
     )
     def display_click_message(clickData, dataset):
         # Displays message shown when a point in the graph is clicked, depending whether it's an image or word
         if clickData:
-            return None
+            return "Clicked a point in the graph"
         else:
             return "Click a data point on the scatter plot to display its corresponding image."
+
+
+'''
+                                    dcc.Dropdown(
+                                        id="dropdown-dataset",
+                                        searchable=False,
+                                        clearable=False,
+                                        options=[
+                                            {
+                                                "label": "Patient 1",
+                                                "value": "PAT_1",
+                                            },
+                                            {
+                                                "label": "Patient 2",
+                                                "value": "PAT_2",
+                                            },
+                                            {
+                                                "label": "Patient 3",
+                                                "value": "PAT_3",
+                                            },
+                                        ],
+                                        placeholder="Select Patient",s
+                                        value="PAT_1",
+                                    ),
+'''

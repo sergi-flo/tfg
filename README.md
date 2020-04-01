@@ -9,6 +9,7 @@
     L'usuari pot canviar entre els diferents pacients que hi ha i els diferents gràfics simultaneament.
     En el gràfic multiplot, l'usuari por seleccionar si només vol visualtizar les dades SOZ, Outside o les dues a la vegada.
 **-TODO**
+
     Afegir que l'usuari pugui seleccionar quines caracteristiques es mostren en el multiplot.
     Afegir els grafics boxplot.
     Mirar a veure si es pot fer histogrames a la diagonal del multiplot.

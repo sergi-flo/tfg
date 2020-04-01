@@ -3,12 +3,18 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
-
 import pandas as pd
 import plotly.graph_objects as go
+from dash.dependencies import Input, Output
+import os,sys,inspect
+
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir) 
+import ppanda
 
 data=pd.read_csv("excel/csvp.csv")
+patient_list=ppanda.patients()
 
 def Card(children, **kawrgs):
     return html.Section(children, className="card-style")
@@ -61,21 +67,29 @@ def create_layout(app):
                             Card(
                                 [
                                     dcc.Dropdown(
-                                        id="dropdown-graphic-type",
+                                        id="dropdown-selected-patient",
+                                        searchable=False,
+                                        clearable=False,
+                                        options=[{"label":k,"value":k} for k in patient_list],
+                                        placeholder="Select patient",
+                                        value=patient_list[0],
+                                    ),
+                                    dcc.Dropdown(
+                                        id="dropdown-selected-graph",
                                         searchable=False,
                                         clearable=False,
                                         options=[
                                             {
-                                                "label": "Sepal",
-                                                "value": "sepal",
+                                                "label": "Sensors",
+                                                "value": "sensors",
                                             },
                                             {
-                                                "label": "Petal",
-                                                "value": "petal",
+                                                "label": "Multiplot",
+                                                "value": "multiplot",
                                             },
                                         ],
                                         placeholder="Select type of graphic",
-                                        value="2D",
+                                        value="sensors",
                                     ),
                                 ],
                             ),
@@ -115,61 +129,45 @@ def create_layout(app):
 
 def demo_callbacks(app):
     @app.callback(
-        Output("graph-plot","figure"),
-        [Input("dropdown-graphic-type","value")]
+        [
+            Output("graph-plot","figure"),
+            Output("data-info", "style"),
+            Output("graph-plot", "style"),
+        ],
+        [
+            Input("dropdown-selected-patient","value"),
+            Input("dropdown-selected-graph","value"),
+        ],
     )
-    def update_figure(selected_patient):
-        if selected_patient == 'petal': 
-            figure= go.Figure(
-                data = go.Scattergl(
-                x = data["Petal width"],
-                y = data["Petal length"],
-                mode = "markers",
-                )
+    def update_figure(selected_patient, selected_graph):
+        if selected_graph == "sensors":
+            data_patient=ppanda.pand_sensores(selected_patient)
+            graph_data=go.Bar(
+                x=[k for k in data_patient.keys()],
+                y=ppanda.dic_to_data(data_patient)[1],
             )
-        else:
-            figure= go.Figure(
-                data=go.Scattergl(
-                x = data["Sepal width"],
-                y = data["Sepal length"],
-                text = data["Species"],
-                mode = "markers",
-                )
+            layout=go.Layout(
+                title = "Data from Patient " + selected_patient,
+                xaxis_title = "Channel",
+                yaxis_title = "Amplitude",
             )
-        return figure
+            figure = go.Figure(data=graph_data, layout=layout)
+            point_info={"display": "none"}
+            graph_display = {"width": "150%"}
+            return figure, point_info, graph_display
+        elif selected_graph == 'multiplot':
+            figure = ppanda.mp(selected_patient)
+            point_info={"dispaly": "none"}
+            graph_display={"width": "150%"}
+            return figure, point_info, graph_display
 
     @app.callback(
         Output("div-plot-click-message", "children"),
-        [Input("graph-plot", "clickData"), Input("dropdown-graphic-type", "value")],
+        [Input("graph-plot", "clickData")],
     )
-    def display_click_message(clickData, dataset):
+    def display_click_message(clickData):
         # Displays message shown when a point in the graph is clicked, depending whether it's an image or word
         if clickData:
             return "Clicked a point in the graph"
         else:
             return "Click a data point on the scatter plot to display its corresponding image."
-
-
-'''
-                                    dcc.Dropdown(
-                                        id="dropdown-dataset",
-                                        searchable=False,
-                                        clearable=False,
-                                        options=[
-                                            {
-                                                "label": "Patient 1",
-                                                "value": "PAT_1",
-                                            },
-                                            {
-                                                "label": "Patient 2",
-                                                "value": "PAT_2",
-                                            },
-                                            {
-                                                "label": "Patient 3",
-                                                "value": "PAT_3",
-                                            },
-                                        ],
-                                        placeholder="Select Patient",s
-                                        value="PAT_1",
-                                    ),
-'''

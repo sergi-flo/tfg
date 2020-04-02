@@ -14,5 +14,7 @@
     Afegir els grafics boxplot.
     Mirar a veure si es pot fer histogrames a la diagonal del multiplot.
     Començar a mirar gràfics 3D.
+    Corregir escala dels gràfics de barra perque es puguin llegir tots els noms del sensors.
+    Mirar com es pot implementar visualització de dades a la dreta del gràfic.
 
 

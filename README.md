@@ -16,5 +16,7 @@
     Començar a mirar gràfics 3D.
     Corregir escala dels gràfics de barra perque es puguin llegir tots els noms del sensors.
     Mirar com es pot implementar visualització de dades a la dreta del gràfic.
-
-
+    Ficar etiquetes per electrodes, per poder clasificar-los.
+    Scatter, Barres, Heat Map, Line plot, Histograma, 3D Plot.
+    
+    

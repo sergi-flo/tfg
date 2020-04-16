@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.graph_objects as go
 
 def load_panda():
-  d=pd.read_csv('excel/hfos.csv')
+  d=pd.read_csv('excel/hfos_final.csv')
   labels=[i for i in d]
   return d[labels[1:]]
 
@@ -69,23 +69,47 @@ def multiplot_soz(selected_patient, *args):
   return dic
 
 
-def multiplot_soz1(selected_patient, *args):
+def multiplot_soz1(selected_patient, selector, args):
   d=load_panda()
   filtered_d=d.loc[d['Patient']==selected_patient]
-  outside={0:'Outside'}
-  soz={0:'SOZ'}
-  for e in args:
-    outside[e]=[]
-    soz[e]=[]
-    for row_zone, row_e in zip(filtered_d['Zone'], filtered_d[e]):
-      if 'Outside' in row_zone:
-        outside[e].append(row_e)
-      else:
-        soz[e].append(row_e)
-  return [outside,soz]
+  a=[]
+  res=[]
+  for e in d[selector]:
+      if e not in a:
+          d={0:e}
+          for h in args:
+            d[h]=[]
+          res.append(d)
+          a.append(e)
+  for y in args:
+    for e in res:
+      for row_selector, row_e in zip(filtered_d[selector], filtered_d[y]):
+        if row_selector == e[0]:
+          e[y].append(row_e)
+  return res
 
-def mp(selected_patient):
-  x=multiplot_soz1(selected_patient, 'Amplitude', 'Oscillations', 'Inst freq')
+def scatter_soz1(selected_patient, selector, args): #args=[x,y]
+  d=load_panda()
+  filtered_d=d.loc[d['Patient']==selected_patient]
+  a=[]
+  res=[]
+  for e in d[selector]:
+      if e not in a:
+          res.append({0:e, 'x':[], 'y':[]})
+          a.append(e)
+  for e in res:
+    for row_selector, row_e in zip(filtered_d[selector], filtered_d[args[0]]):
+      if row_selector == e[0]:
+        e['x'].append(row_e)
+  for e in res:
+    for row_selector, row_e in zip(filtered_d[selector], filtered_d[args[1]]):
+      if row_selector == e[0]:
+        e['y'].append(row_e)
+  return res
+
+def mp(selected_patient, selector, values):
+  x=multiplot_soz1(selected_patient, selector, values)
+  print(x)
   data=[]
   for e in x:
     d=go.Splom(
@@ -94,8 +118,24 @@ def mp(selected_patient):
     marker=dict(size=4),
     diagonal=dict(visible=False))
     data.append(d)
+  print(data)
   layout=go.Layout(title="Multiplot prove", dragmode='select', hovermode='closest', showlegend=True)
   fig=go.Figure(data=data,layout=layout)
+  return fig
+
+def scatter(selected_patient, selector, values):
+  x=scatter_soz1(selected_patient, selector, values)
+  data=[]
+  for e in x:
+    d=go.Scatter(
+      x=e['x'],
+      y=e['y'],
+      name=e[0],
+      mode='markers',
+      marker=dict(size=4))
+    data.append(d)
+  layout=go.Layout(title="Scatterplot prove", hovermode='closest', showlegend=True, xaxis_title=values[0], yaxis_title=values[1])
+  fig=go.Figure(data=data, layout=layout)
   return fig
 
 if __name__=='__main__':

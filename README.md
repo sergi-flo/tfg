@@ -18,5 +18,16 @@
     Mirar com es pot implementar visualització de dades a la dreta del gràfic.
     Ficar etiquetes per electrodes, per poder clasificar-los.
     Scatter, Barres, Heat Map, Line plot, Histograma, 3D Plot.
-    
-    
+
+## 17/4/20 Actualització
+**-Fet**
+
+    He afegit que l'usuari pugui seleccionar d'una checklist variables a mostrar en multiplot.
+
+
+**-TODO**
+
+    Fer grafiques 3d punts, magnitud y selector
+    heatmap
+    3d amb 3 varible
+

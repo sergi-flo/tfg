@@ -30,4 +30,3 @@
     Fer grafiques 3d punts, magnitud y selector
     heatmap
     3d amb 3 varible
-

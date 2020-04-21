@@ -5,13 +5,17 @@ import plotly.graph_objects as go
 from scipy.io import loadmat
 
 def load_panda():
-  d=pd.read_csv('excel/hfos_final.csv')
+  d=pd.read_csv('excel/hfos_clean.csv')
   labels=[i for i in d]
   return d[labels[1:]]
 
-def neddles_list():
+def needles_list(patient=None, all=False):
   d=load_panda()
+  if patient!=None:
+    d=d.loc[d['Patient']==patient]
   res=[]
+  if all:
+    res.append('All')
   for e in d['Channel']:
     ee=''.join(filter(str.isalpha, e))
     if ee not in res:
@@ -82,10 +86,10 @@ def multiplot_soz1(selected_patient, *args):
 def multiplot_soz(selected_patient, selector, args):
   d=load_panda()
   filtered_d=d.loc[d['Patient']==selected_patient]
-  neddles=neddles_list()
+  needles=needles_list(selected_patient)
   a=[]
   res=[]
-  if selector != 'Neddles':
+  if selector != 'needles':
     for e in d[selector]:
       if e not in a:
           d={0:e}
@@ -94,20 +98,20 @@ def multiplot_soz(selected_patient, selector, args):
           res.append(d)
           a.append(e)
   else:
-    for e in neddles:
+    for e in needles:
       d={0:e}
       for h in args:
         d[h]=[]
       res.append(d)
   for y in args:
     for e in res:
-      if selector != 'Neddles':
+      if selector != 'needles':
         for row_selector, row_e in zip(filtered_d[selector], filtered_d[y]):
           if row_selector == e[0]:
             e[y].append(row_e)
       else:
         for row_selector, row_e in zip(filtered_d['Channel'], filtered_d[y]):
-          if e[0] in row_selector:
+          if e[0]==''.join(filter(str.isalpha, row_selector)):
             e[y].append(row_e)
   return res
 
@@ -128,26 +132,26 @@ def mp(selected_patient, selector, values):
 def scatter_soz(selected_patient, selector, args): #args=[x,y]
   d=load_panda()
   filtered_d=d.loc[d['Patient']==selected_patient]
-  neddles=neddles_list()
+  needles=needles_list(selected_patient)
   a=[]
   res=[]
-  if selector != 'Neddles':
+  if selector != 'needles':
     for e in d[selector]:
         if e not in a:
             res.append({0:e, 'x':[], 'y':[]})
             a.append(e)
   else:
-    for e in neddles:
+    for e in needles:
       res.append({0:e, 'x':[], 'y':[]})
   for e in res:
-    if selector != 'Neddles':
+    if selector != 'needles':
       for row_selector, row_x, row_y in zip(filtered_d[selector], filtered_d[args[0]], filtered_d[args[1]]):
         if row_selector == e[0]:
           e['x'].append(row_x)
           e['y'].append(row_y)
     else:
       for row_selector, row_x, row_y in zip(filtered_d['Channel'], filtered_d[args[0]], filtered_d[args[1]]):
-        if e[0] in row_selector:
+        if e[0]==''.join(filter(str.isalpha, row_selector)):
           e['x'].append(row_x)
           e['y'].append(row_y)
   return res
@@ -170,25 +174,25 @@ def scatter(selected_patient, selector, values):
 def histogram_soz(selected_patient, selector, args): #args=[x,y]
   d=load_panda()
   filtered_d=d.loc[d['Patient']==selected_patient]
-  neddles=neddles_list()
+  needles=needles_list(selected_patient)
   a=[]
   res=[]
-  if selector != 'Neddles':
+  if selector != 'needles':
     for e in d[selector]:
         if e not in a:
             res.append({0:e, 'd':[], 'len':0})
             a.append(e)
   else:
-    for e in neddles:
+    for e in needles:
       res.append({0:e, 'd':[], 'len':0})
   for e in res:
-    if selector != 'Neddles':
+    if selector != 'needles':
       for row_selector, row_e in zip(filtered_d[selector], filtered_d[args]):
         if row_selector == e[0]:
           e['d'].append(row_e)
     else:
       for row_selector, row_e in zip(filtered_d['Channel'], filtered_d[args]):
-        if e[0] in row_selector:
+        if e[0]==''.join(filter(str.isalpha, row_selector)):
           e['d'].append(row_e)
   for e in res:
     e['len']=len(e['d'])
@@ -222,19 +226,19 @@ def heatmap():
 def scatter3d_soz(selected_patient, selector, args): #args=[x,y,z]
   d=load_panda()
   filtered_d=d.loc[d['Patient']==selected_patient]
-  neddles=neddles_list()
+  needles=needles_list(selected_patient)
   a=[]
   res=[]
-  if selector != 'Neddles':
+  if selector != 'needles':
     for e in d[selector]:
         if e not in a:
             res.append({0:e, 'x':[], 'y':[], 'z':[]})
             a.append(e)
   else:
-    for e in neddles:
+    for e in needles:
       res.append({0:e, 'x':[], 'y':[], 'z':[]})
   for e in res:
-    if selector != 'Neddles':
+    if selector != 'needles':
       for row_selector, row_x, row_y, row_z in zip(filtered_d[selector], filtered_d[args[0]], filtered_d[args[1]], filtered_d[args[2]]):
         if row_selector == e[0]:
           e['x'].append(row_x)
@@ -242,7 +246,7 @@ def scatter3d_soz(selected_patient, selector, args): #args=[x,y,z]
           e['z'].append(row_z)
     else:
       for row_selector, row_x, row_y, row_z in zip(filtered_d['Channel'], filtered_d[args[0]], filtered_d[args[1]], filtered_d[args[2]]):
-        if e[0] in row_selector:
+        if e[0]==''.join(filter(str.isalpha, row_selector)):
           e['x'].append(row_x)
           e['y'].append(row_y)
           e['z'].append(row_z)
@@ -261,6 +265,72 @@ def scatter3d(selected_patient, selector, values):
       marker=dict(size=4))
     data.append(d)
   layout=go.Layout(title="3D Scatterplot prove", hovermode='closest', showlegend=True, scene=dict(xaxis_title=values[0], yaxis_title=values[1], zaxis_title=values[2]))
+  fig=go.Figure(data=data, layout=layout)
+  return fig
+
+def list_needles_3dscatter(filtered_d, needles):
+  res=[]
+  for e in needles:
+    dic={0:e, 'data':[]}
+    a=[]
+    for y, row_x, row_y, row_z in zip(filtered_d['Channel'], filtered_d['x'], filtered_d['y'], filtered_d['z']):
+      if (e==''.join(filter(str.isalpha, y))) and (y not in a):
+        dic['data'].append({0:y, 'xyz':[row_x, row_y, row_z], 'd':[], 'd_scale':[]})
+        a.append(y)
+    res.append(dic)
+  return res
+
+def scatter3d_soz_v1(selected_patient, args):
+  d=load_panda()
+  filtered_d=d.loc[d['Patient']==selected_patient]
+  needles=needles_list()
+  res=list_needles_3dscatter(filtered_d, needles_list(selected_patient))
+  for e in res:
+    for y in e['data']:
+      for row_selector, value in zip(filtered_d['Channel'], filtered_d[args]):
+        if y[0]==row_selector:
+          y['d'].append(value)
+  mini=0
+  maxi=0
+  for e in res:
+    for y in e['data']:
+      calc=sum(y['d'])/len(y['d'])
+      y['d']=calc
+      if calc>maxi:
+        maxi=calc
+      if calc<mini:
+        mini=calc
+  scale_factor=maxi-mini
+  for e in res:
+    for y in e['data']:
+      scale=(y['d']/scale_factor)*25
+      y['d_scale']=scale
+  return res
+
+def scatter3d_v1(selected_patient, values):
+  data=[]
+  x=scatter3d_soz_v1(selected_patient, values)
+  for e in x:
+    d=go.Scatter3d(
+      x=[k['xyz'][0] for k in e['data']],
+      y=[k['xyz'][1] for k in e['data']],
+      z=[k['xyz'][2] for k in e['data']],
+      name=e[0],
+      mode='markers',
+      text=[k[0] for k in e['data']],
+      customdata=[[k['d'],values] for k in e['data']],
+      hovertemplate=
+      "<b>%{text}</b><br>" +
+      "%{customdata[1]} = %{customdata[0]:.02f}<br>" +
+      "<extra></extra>",
+      marker = dict(
+        sizemode='diameter',
+        sizeref=1,
+        size=[k['d_scale'] for k in e['data']],
+      ),
+      )
+    data.append(d)
+  layout=go.Layout(title="3D Scatterplot needles prove", hovermode='closest', showlegend=True, scene=dict(xaxis_title='X-axis', yaxis_title='Y-axis', zaxis_title='Z-axis'))
   fig=go.Figure(data=data, layout=layout)
   return fig
 

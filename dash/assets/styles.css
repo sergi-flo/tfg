@@ -4,6 +4,10 @@
   padding: 15px 35px;
 }
 
+.footer {
+  padding: 5px 20px;
+}
+
 .header_img {
   float: left;
 }
@@ -16,7 +20,7 @@
   font-family: "Times New Roman";
   color: #6c7182;
   text-align: right;
-  margin: 0 !important;
+  margin: 0;
 }
 
 .logo {

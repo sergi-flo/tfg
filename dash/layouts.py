@@ -26,7 +26,7 @@ def Card(children, **kawrgs):
 def NamedInlineRadioItems(name, short, options, val, **kwargs):
     return html.Div(
         id=f"div-{short}",
-        style={"display": "inline-block", "margin": "20px 0px 5px 0px"},
+        style={"display": "inline-block", "margin": "15px 0px 0px 0px"},
         children=[
             f"{name}:",
             dcc.RadioItems(
@@ -46,19 +46,30 @@ def create_layout(app):
         children=[
             #Header
             html.Div(
-                className="row Header",
+                className="row header",
                 id="app-header",
                 style={"background-color": "#f9f9f9"},
                 children=[
                     html.Div(
                         [
+                            html.Img(
+                                src=app.get_asset_url("dash-logo.png"),
+                                className="logo",
+                                id="plotly-image",
+                                alt='LOGO',
+                            )
+                        ],
+                        className="three columns header_img",
+                    ),
+                    html.Div(
+                        [
                             html.H3(
                                 "Epilepsy data from various patients",
-                                className="header-title",
+                                className="header_title",
                                 id="app-title",
                             )
                         ],
-                        className="header_title_container",
+                        className="nine columns header_title_container",
                     ),
                 ],
             ),
@@ -79,7 +90,7 @@ def create_layout(app):
             #Body
             html.Div(
                 className='row background',
-                style={"padding": "10px"},
+                style={"padding": "0px 20px 10px 0px"},
                 children=[
                     html.Div(
                         className="three columns",
@@ -101,11 +112,12 @@ def create_layout(app):
                                         options=[{"label":k,"value":k.lower()} for k in graphics],
                                         placeholder="Select type of graphic",
                                         value=graphics[0].lower(),
+                                        style={"margin": "15px 0px 15px" },
                                     ),
                                     html.Div(
                                         id="div-multiplot",
                                         children=[
-                                            f"Choose legend variable",
+                                            f"Choose legend variable:",
                                             dcc.Dropdown(
                                                 id="dropdown-multiplot-legend",
                                                 searchable=False,
@@ -113,12 +125,16 @@ def create_layout(app):
                                                 options=[{"label":k,"value":k} for k in scatter_selectors],
                                                 placeholder="Select legend",
                                                 value=scatter_selectors[0],
+                                                style={"margin": "5px 0px 20px"},
                                             ),
                                             f"Selectors:",
                                             dcc.Checklist(
                                                 id="checklist-selectors",
                                                 options=[{"label":k,"value":k} for k in values_variables],
                                                 value=[],
+                                                inputStyle={"margin-right": "2px"},
+                                                labelStyle={"display": "inline-block", "margin-right": "7px"},
+                                                style={"display":"inline-block", "margin-left": "7px"},
                                             ),
                                         ],
                                     ),
@@ -126,7 +142,7 @@ def create_layout(app):
                                         id="div-scatterplot",
                                         style={"display": "none"},
                                         children=[
-                                            f"Choose legend variable",
+                                            f"Choose legend variable:",
                                             dcc.Dropdown(
                                                 id="dropdown-scatter-legend",
                                                 searchable=False,
@@ -134,6 +150,7 @@ def create_layout(app):
                                                 options=[{"label":k,"value":k} for k in scatter_selectors],
                                                 placeholder="Select legend",
                                                 value=scatter_selectors[0],
+                                                style={"margin": "5px 0px 5px"},
                                             ),
                                             NamedInlineRadioItems(
                                                 name="Value for X-axis",
@@ -161,6 +178,7 @@ def create_layout(app):
                                                 options=[{"label":k,"value":k} for k in scatter_selectors],
                                                 placeholder="Select legend",
                                                 value=scatter_selectors[0],
+                                                style={"margin": "5px 0px 5px"},
                                             ),
                                             NamedInlineRadioItems(
                                                 name="Value for Histogram",
@@ -182,6 +200,7 @@ def create_layout(app):
                                                 options=[{"label":k,"value":k} for k in scatter_selectors],
                                                 placeholder="Select legend",
                                                 value=scatter_selectors[0],
+                                                style={"margin": "5px 0px 5px"},
                                             ),
                                             NamedInlineRadioItems(
                                                 name="Value for X-axis",
@@ -215,6 +234,7 @@ def create_layout(app):
                                                 options=[{"label":k,"value":k} for k in values_variables],
                                                 placeholder="Select variable value",
                                                 value=values_variables[0],
+                                                style={"margin": "5px 0px 5px"},
                                             ),
                                         ],
                                     ),
@@ -223,44 +243,27 @@ def create_layout(app):
                         ],
                     ),
                     html.Div(
-                        className="six columns",
+                        className="nine columns",
                         children=[
                             dcc.Graph(id="graph-plot", style={"height": "98vh"})
                         ],
                     ),
-                    html.Div(
-                        className="three columns",
-                        id="data-info",
-                        children=[
-                            Card(
-                                style={"padding": "5px"},
-                                children=[
-                                    html.Div(
-                                        id="div-plot-click-message",
-                                        style={
-                                            "text-align": "center",
-                                            "margin-bottom": "7px",
-                                            "font-weight": "bold",
-                                        },
-                                    ),
-                                    html.Div(id="div-plot-click-point"),
-                                ],
-                            )
-                        ],
-                    ),
                 ],
             ),
+            #Header
+            #html.Footer(
+            #    f"Web-App Copyright © 2020",
+            #    className="row footer",
+            #    id="app-footer",
+            #    style={"background-color": "#f9f9f9", "text-align": "center"},
+            #),
         ],
     )
 
 
 def demo_callbacks(app):
     @app.callback(
-        [
             Output("graph-plot","figure"),
-            Output("data-info", "style"),
-            Output("graph-plot", "style"),
-        ],
         [
             Input("dropdown-selected-patient","value"), Input("dropdown-selected-graph","value"),
             Input("dropdown-multiplot-legend", "value"), Input("checklist-selectors", "value"),
@@ -280,34 +283,22 @@ def demo_callbacks(app):
         ):
         if selected_graph == 'multiplot':
             figure = ppanda.mp(selected_patient, selector_multipot, selected_variables)
-            point_info={"dispaly": "none"}
-            graph_display={"width": "150%"}
-            return figure, point_info, graph_display
+            return figure
         elif selected_graph == 'scatterplot':
             figure = ppanda.scatter(selected_patient, selector_scatter, [scatter_x, scatter_y])
-            point_info={"dispaly": "none"}
-            graph_display={"width": "150%"}
-            return figure, point_info, graph_display
+            return figure
         elif selected_graph == 'histogram':
             figure = ppanda.histogram(selected_patient, selector_histogram, value_histogram)
-            point_info={"dispaly": "none"}
-            graph_display={"width": "150%"}
-            return figure, point_info, graph_display
+            return figure
         elif selected_graph == 'heatmap':
             figure = ppanda.heatmap()
-            point_info={"dispaly": "none"}
-            graph_display={"width": "150%"}
-            return figure, point_info, graph_display
+            return figure
         elif selected_graph == '3d scatter':
             figure = ppanda.scatter3d(selected_patient, selector_scatter3d, [scatter3d_x, scatter3d_y, scatter3d_z])
-            point_info={"dispaly": "none"}
-            graph_display={"width": "150%"}
-            return figure, point_info, graph_display
+            return figure
         elif selected_graph == '3d scatter needles':
             figure = ppanda.scatter3d_v1(selected_patient, variable_needles)
-            point_info={"dispaly": "none"}
-            graph_display={"width": "150%"}
-            return figure, point_info, graph_display
+            return figure
 
 
 
@@ -322,7 +313,7 @@ def demo_callbacks(app):
         [Input("dropdown-selected-graph", "value")],
     )
     def show_selectors(selected_graph):
-        yes={"display": "block", "margin": "20px 0px 20px 0px"}
+        yes={"display": "block", "margin": "0px 0px 20px 0px"}
         no={"display": "none"}
         if selected_graph=="multiplot":
             return yes, no, no, no, no
@@ -336,7 +327,7 @@ def demo_callbacks(app):
             return no, no, no, no, yes
         else:
             return no, no, no, no, no
-
+'''
     @app.callback(
         Output("div-plot-click-message", "children"),
         [Input("graph-plot", "clickData")],
@@ -348,7 +339,7 @@ def demo_callbacks(app):
         else:
             return "Click a data point on the scatter plot to display its corresponding image."
 
-'''
+
 html.Div(
     id="div-multiplot",
     style={"display": "none"},

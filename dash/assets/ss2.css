@@ -377,7 +377,6 @@ select:focus {
 label,
 legend {
   display: block;
-  margin-bottom: 0.5rem;
   font-weight: 600;
 }
 fieldset {
@@ -454,12 +453,13 @@ button,
 .button {
   margin-bottom: 1rem;
 }
-input,
+
 textarea,
 select,
 fieldset {
   margin-bottom: 1.5rem;
 }
+
 pre,
 blockquote,
 dl,

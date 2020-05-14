@@ -5,15 +5,18 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import plotly.graph_objects as go
-from dash.dependencies import Input, Output
 import os,sys,inspect
+from app import app
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir) 
 import ppanda
 
-data=pd.read_csv("excel/csvp.csv")
+bioart_logo_path='BIOART_logo.png'
+upc_logo_path='logo_UPC.png'
+epyHFO_logo_path='epyHFO_logo.png'
+
 patient_list=ppanda.patients()
 selectors=['State', 'Channel', 'Dist', 'Dist_Cat', 'Zone', 'SOZ', 'Pathologic HFO', 'State/Activity']
 scatter_selectors=['State', 'Dist_Cat', 'Zone', 'needles', 'SOZ', 'Pathologic HFO', 'State/Activity']
@@ -39,8 +42,7 @@ def NamedInlineRadioItems(name, short, options, val, **kwargs):
         ],
     )
 
-def create_layout(app):
-  return html.Div(
+layout1=html.Div(
         className="row",
         style={"max-width": "100%", "font-size": "1.5rem", "padding": "0px 0px"},
         children=[
@@ -53,7 +55,7 @@ def create_layout(app):
                     html.Div(
                         [
                             html.Img(
-                                src=app.get_asset_url("BIOART_logo.png"),
+                                src=app.get_asset_url(bioart_logo_path),
                                 width=200,
                                 height=100,
                                 className="logo",
@@ -238,6 +240,14 @@ def create_layout(app):
                                                 value=values_variables[0],
                                                 style={"margin": "5px 0px 5px"},
                                             ),
+                                            dcc.Checklist(
+                                                id="checkbox-brain",
+                                                options=[{"label":"Display brain mesh", "value": 1}],
+                                                value=[],
+                                                inputStyle={"margin-right": "2px"},
+                                                labelStyle={"display": "inline-block", "padding-top": "20px"},
+                                                style={"display":"inline-block"},
+                                            ),
                                         ],
                                     ),
                                     html.Div(
@@ -253,6 +263,14 @@ def create_layout(app):
                                                 placeholder="Select variable value",
                                                 value=values_variables[0],
                                                 style={"margin": "5px 0px 5px"},
+                                            ),
+                                            dcc.Checklist(
+                                                id="checkbox-brain-colored",
+                                                options=[{"label":"Display brain mesh", "value": 1}],
+                                                value=[],
+                                                inputStyle={"margin-right": "2px"},
+                                                labelStyle={"display": "inline-block", "padding-top": "20px"},
+                                                style={"display":"inline-block"},
                                             ),
                                         ],
                                     ),
@@ -278,93 +296,7 @@ def create_layout(app):
         ],
     )
 
-
-def demo_callbacks(app):
-    @app.callback(
-            Output("graph-plot","figure"),
-        [
-            Input("dropdown-selected-patient","value"), Input("dropdown-selected-graph","value"),
-            Input("dropdown-multiplot-legend", "value"), Input("checklist-selectors", "value"),
-            Input("radio-scatter-x-axis", "value"), Input("radio-scatter-y-axis", "value"), Input("dropdown-scatter-legend", "value"),
-            Input("dropdown-histogram-legend", "value"), Input("radio-data-histogram", "value"),
-            Input("radio-3dscatter-x-axis", "value"), Input("radio-3dscatter-y-axis", "value"), Input("radio-3dscatter-z-axis", "value"), Input("dropdown-3dscatter-legend", "value"),
-            Input("dropdown-needle-variable", "value"),
-            Input("dropdown-needle-variable-colored", "value"),
-        ],
-    )
-    def update_figure(
-        selected_patient, selected_graph, 
-        selector_multipot, selected_variables,
-        scatter_x, scatter_y, selector_scatter, 
-        selector_histogram, value_histogram,
-        scatter3d_x, scatter3d_y, scatter3d_z, selector_scatter3d,
-        variable_needles,
-        variable_needles_colored
-        ):
-        if selected_graph == 'multiplot':
-            figure = ppanda.mp(selected_patient, selector_multipot, selected_variables)
-            return figure
-        elif selected_graph == 'scatterplot':
-            figure = ppanda.scatter(selected_patient, selector_scatter, [scatter_x, scatter_y])
-            return figure
-        elif selected_graph == 'histogram':
-            figure = ppanda.histogram(selected_patient, selector_histogram, value_histogram)
-            return figure
-        elif selected_graph == 'heatmap':
-            figure = ppanda.heatmap()
-            return figure
-        elif selected_graph == '3d scatter':
-            figure = ppanda.scatter3d(selected_patient, selector_scatter3d, [scatter3d_x, scatter3d_y, scatter3d_z])
-            return figure
-        elif selected_graph == '3d scatter needles':
-            figure = ppanda.scatter3d_v1(selected_patient, variable_needles)
-            return figure
-        elif selected_graph == '3d scatter needles colored':
-            figure = ppanda.scatter3d_color_v1(selected_patient, variable_needles_colored)
-            return figure
-
-
-
-    @app.callback(
-        [
-            Output("div-multiplot", "style"),
-            Output("div-scatterplot", "style"),
-            Output("div-histogram", "style"),
-            Output("div-3dscatter", "style"),
-            Output("div-3dneedles", "style"),
-            Output("div-3dneedles-colored", "style"),
-        ],
-        [Input("dropdown-selected-graph", "value")],
-    )
-    def show_selectors(selected_graph):
-        yes={"display": "block", "margin": "0px 0px 20px 0px"}
-        no={"display": "none"}
-        if selected_graph=="multiplot":
-            return yes, no, no, no, no, no
-        elif selected_graph=="scatterplot":
-            return no, yes, no, no, no, no
-        elif selected_graph=="histogram":
-            return no, no, yes, no, no, no
-        elif selected_graph=="3d scatter":
-            return no, no, no, yes, no, no
-        elif selected_graph=="3d scatter needles":
-            return no, no, no, no, yes, no
-        elif selected_graph=="3d scatter needles colored":
-            return no, no, no, no, no, yes
-        else:
-            return no, no, no, no, no, no
 '''
-    @app.callback(
-        Output("div-plot-click-message", "children"),
-        [Input("graph-plot", "clickData")],
-    )
-    def display_click_message(clickData):
-        # Displays message shown when a point in the graph is clicked, depending whether it's an image or word
-        if clickData:
-            return "Clicked a point in the graph"
-        else:
-            return "Click a data point on the scatter plot to display its corresponding image."
-
 
 html.Div(
     id="div-multiplot",

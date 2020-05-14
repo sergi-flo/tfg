@@ -5,8 +5,12 @@ import plotly.graph_objects as go
 import plotly.express as px
 from scipy.io import loadmat
 
+file_path='excel/hfos_clean.csv'
+brains_path ='brains/brain'
+positions_path = 'brains/positions'
+
 def load_panda():
-  d=pd.read_csv('excel/hfos_clean.csv')
+  d=pd.read_csv(file_path)
   labels=[i for i in d]
   return d[labels[1:]]
 
@@ -320,10 +324,11 @@ def colored_dic(selected_patient, values):
       data['color'].append(y['d'])
   return data
 
-#TODO-try to display needles group
-def scatter3d_color_v1(selected_patient, values):
+
+def scatter3d_color_v1(selected_patient, values, show_brain):
   colored_data=colored_dic(selected_patient, values)
-  d=go.Scatter3d(
+  brain = loadmat(brains_path+selected_patient+'.mat', squeeze_me=True)
+  d=[go.Scatter3d(
     x=[k for k in colored_data['x']],
     y=[k for k in colored_data['y']],
     z=[k for k in colored_data['z']],
@@ -341,13 +346,28 @@ def scatter3d_color_v1(selected_patient, values):
       color=[k for k in colored_data['color']],
       colorbar=dict(thickness=20),
     ),
-    )
+    )]
+  if show_brain==[1]:
+    d.append(go.Mesh3d(
+        # 8 vertices of a cube
+        x=[a[0] for a in brain['Vertices']],
+        y=[a[1] for a in brain['Vertices']],
+        z=[a[2] for a in brain['Vertices']],
+        opacity=0.15,
+        # i, j and k give the vertices of triangles
+        i=[a[0]-1 for a in brain['Faces']],
+        j=[a[1]-1 for a in brain['Faces']],
+        k=[a[2]-1 for a in brain['Faces']],
+        name='y',
+        showscale=True
+    ))
   layout=go.Layout(title="3D Scatterplot needles colored prove", hovermode='closest', scene=dict(xaxis_title='X-axis', yaxis_title='Y-axis', zaxis_title='Z-axis'))
   fig=go.Figure(data=d, layout=layout)
   return fig
 
 
-def scatter3d_v1(selected_patient, values):
+def scatter3d_v1(selected_patient, values, show_brain):
+  brain = loadmat(brains_path+selected_patient+'.mat', squeeze_me=True)
   data=[]
   x=scatter3d_soz_v1(selected_patient, values)
   for e in x:
@@ -370,10 +390,23 @@ def scatter3d_v1(selected_patient, values):
       ),
       )
     data.append(d)
+  if show_brain==[1]:
+    data.append(go.Mesh3d(
+        # 8 vertices of a cube
+        x=[a[0] for a in brain['Vertices']],
+        y=[a[1] for a in brain['Vertices']],
+        z=[a[2] for a in brain['Vertices']],
+        opacity=0.15,
+        # i, j and k give the vertices of triangles
+        i=[a[0]-1 for a in brain['Faces']],
+        j=[a[1]-1 for a in brain['Faces']],
+        k=[a[2]-1 for a in brain['Faces']],
+        name='y',
+        showscale=True
+    ))
   layout=go.Layout(title="3D Scatterplot needles prove", hovermode='closest', showlegend=True, scene=dict(xaxis_title='X-axis', yaxis_title='Y-axis', zaxis_title='Z-axis'))
   fig=go.Figure(data=data, layout=layout)
   return fig
-
 
 
 if __name__=='__main__':

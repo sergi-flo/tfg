@@ -18,7 +18,7 @@ patient_list=ppanda.patients()
 selectors=['State', 'Channel', 'Dist', 'Dist_Cat', 'Zone', 'SOZ', 'Pathologic HFO', 'State/Activity']
 scatter_selectors=['State', 'Dist_Cat', 'Zone', 'needles', 'SOZ', 'Pathologic HFO', 'State/Activity']
 values_variables=['Dur f', 'Dur t', 'Area', 'Entropy', 'Perimeter', 'Symmetry T', 'Symmetry F', 'Oscillations', 'Kurtosis', 'Skewness', 'Amplitude', 'Inst freq']
-graphics=["Multiplot", "Scatterplot", "Histogram", "Heatmap", "3D Scatter", "3D Scatter Needles"]
+graphics=["Multiplot", "Scatterplot", "Histogram", "Heatmap", "3D Scatter", "3D Scatter Needles", "3D Scatter Needles Colored"]
 
 def Card(children, **kawrgs):
     return html.Section(children, className="card-style")
@@ -53,7 +53,9 @@ def create_layout(app):
                     html.Div(
                         [
                             html.Img(
-                                src=app.get_asset_url("dash-logo.png"),
+                                src=app.get_asset_url("BIOART_logo.png"),
+                                width=200,
+                                height=100,
                                 className="logo",
                                 id="plotly-image",
                                 alt='LOGO',
@@ -238,6 +240,22 @@ def create_layout(app):
                                             ),
                                         ],
                                     ),
+                                    html.Div(
+                                        id="div-3dneedles-colored",
+                                        style={"display": "none"},
+                                        children=[
+                                            f"Choose variable to display: ",
+                                            dcc.Dropdown(
+                                                id="dropdown-needle-variable-colored",
+                                                searchable=False,
+                                                clearable=False,
+                                                options=[{"label":k,"value":k} for k in values_variables],
+                                                placeholder="Select variable value",
+                                                value=values_variables[0],
+                                                style={"margin": "5px 0px 5px"},
+                                            ),
+                                        ],
+                                    ),
                                 ],
                             ),
                         ],
@@ -270,7 +288,8 @@ def demo_callbacks(app):
             Input("radio-scatter-x-axis", "value"), Input("radio-scatter-y-axis", "value"), Input("dropdown-scatter-legend", "value"),
             Input("dropdown-histogram-legend", "value"), Input("radio-data-histogram", "value"),
             Input("radio-3dscatter-x-axis", "value"), Input("radio-3dscatter-y-axis", "value"), Input("radio-3dscatter-z-axis", "value"), Input("dropdown-3dscatter-legend", "value"),
-            Input("dropdown-needle-variable", "value")
+            Input("dropdown-needle-variable", "value"),
+            Input("dropdown-needle-variable-colored", "value"),
         ],
     )
     def update_figure(
@@ -279,7 +298,8 @@ def demo_callbacks(app):
         scatter_x, scatter_y, selector_scatter, 
         selector_histogram, value_histogram,
         scatter3d_x, scatter3d_y, scatter3d_z, selector_scatter3d,
-        variable_needles
+        variable_needles,
+        variable_needles_colored
         ):
         if selected_graph == 'multiplot':
             figure = ppanda.mp(selected_patient, selector_multipot, selected_variables)
@@ -299,6 +319,9 @@ def demo_callbacks(app):
         elif selected_graph == '3d scatter needles':
             figure = ppanda.scatter3d_v1(selected_patient, variable_needles)
             return figure
+        elif selected_graph == '3d scatter needles colored':
+            figure = ppanda.scatter3d_color_v1(selected_patient, variable_needles_colored)
+            return figure
 
 
 
@@ -309,6 +332,7 @@ def demo_callbacks(app):
             Output("div-histogram", "style"),
             Output("div-3dscatter", "style"),
             Output("div-3dneedles", "style"),
+            Output("div-3dneedles-colored", "style"),
         ],
         [Input("dropdown-selected-graph", "value")],
     )
@@ -316,17 +340,19 @@ def demo_callbacks(app):
         yes={"display": "block", "margin": "0px 0px 20px 0px"}
         no={"display": "none"}
         if selected_graph=="multiplot":
-            return yes, no, no, no, no
+            return yes, no, no, no, no, no
         elif selected_graph=="scatterplot":
-            return no, yes, no, no, no
+            return no, yes, no, no, no, no
         elif selected_graph=="histogram":
-            return no, no, yes, no, no
+            return no, no, yes, no, no, no
         elif selected_graph=="3d scatter":
-            return no, no, no, yes, no
+            return no, no, no, yes, no, no
         elif selected_graph=="3d scatter needles":
-            return no, no, no, no, yes
+            return no, no, no, no, yes, no
+        elif selected_graph=="3d scatter needles colored":
+            return no, no, no, no, no, yes
         else:
-            return no, no, no, no, no
+            return no, no, no, no, no, no
 '''
     @app.callback(
         Output("div-plot-click-message", "children"),

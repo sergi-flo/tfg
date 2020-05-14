@@ -2,6 +2,7 @@
 
 import pandas as pd
 import plotly.graph_objects as go
+import plotly.express as px
 from scipy.io import loadmat
 
 def load_panda():
@@ -307,6 +308,45 @@ def scatter3d_soz_v1(selected_patient, args):
       y['d_scale']=scale
   return res
 
+def colored_dic(selected_patient, values):
+  x=scatter3d_soz_v1(selected_patient, values)
+  data={'needle_group':[], 'x':[], 'y':[], 'z':[], 'text':[], 'color':[]}
+  for e in x:
+    for y in e['data']:
+      data['x'].append(y['xyz'][0])
+      data['y'].append(y['xyz'][1])
+      data['z'].append(y['xyz'][2])
+      data['text'].append(y[0])
+      data['color'].append(y['d'])
+  return data
+
+#TODO-try to display needles group
+def scatter3d_color_v1(selected_patient, values):
+  colored_data=colored_dic(selected_patient, values)
+  d=go.Scatter3d(
+    x=[k for k in colored_data['x']],
+    y=[k for k in colored_data['y']],
+    z=[k for k in colored_data['z']],
+    #name=e[0],
+    mode='markers',
+    text=[k for k in colored_data['text']],
+    customdata=[[k, values] for k in colored_data['color']],
+    hovertemplate=
+    "<b>%{text}</b><br>" +
+    "%{customdata[1]} = %{customdata[0]:.02f}<br>" +
+    "<extra></extra>",
+    marker = dict(
+      sizemode='diameter',
+      sizeref=1,
+      color=[k for k in colored_data['color']],
+      colorbar=dict(thickness=20),
+    ),
+    )
+  layout=go.Layout(title="3D Scatterplot needles colored prove", hovermode='closest', scene=dict(xaxis_title='X-axis', yaxis_title='Y-axis', zaxis_title='Z-axis'))
+  fig=go.Figure(data=d, layout=layout)
+  return fig
+
+
 def scatter3d_v1(selected_patient, values):
   data=[]
   x=scatter3d_soz_v1(selected_patient, values)
@@ -318,7 +358,7 @@ def scatter3d_v1(selected_patient, values):
       name=e[0],
       mode='markers',
       text=[k[0] for k in e['data']],
-      customdata=[[k['d'],values] for k in e['data']],
+      customdata=[[k['d'], values] for k in e['data']],
       hovertemplate=
       "<b>%{text}</b><br>" +
       "%{customdata[1]} = %{customdata[0]:.02f}<br>" +
@@ -333,6 +373,8 @@ def scatter3d_v1(selected_patient, values):
   layout=go.Layout(title="3D Scatterplot needles prove", hovermode='closest', showlegend=True, scene=dict(xaxis_title='X-axis', yaxis_title='Y-axis', zaxis_title='Z-axis'))
   fig=go.Figure(data=data, layout=layout)
   return fig
+
+
 
 if __name__=='__main__':
   pand_sensores()

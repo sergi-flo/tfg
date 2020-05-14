@@ -78,6 +78,10 @@
   background-color: #f2f3f4 !important;
 }
 
+#opacity-slider-brain, #opacity-slider-brain {
+  padding: 5px 5px 25px !important;
+}
+
 .card-style {
   padding: 20px;
   margin: 5px;

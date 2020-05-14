@@ -312,61 +312,7 @@ def scatter3d_soz_v1(selected_patient, args):
       y['d_scale']=scale
   return res
 
-def colored_dic(selected_patient, values):
-  x=scatter3d_soz_v1(selected_patient, values)
-  data={'needle_group':[], 'x':[], 'y':[], 'z':[], 'text':[], 'color':[]}
-  for e in x:
-    for y in e['data']:
-      data['x'].append(y['xyz'][0])
-      data['y'].append(y['xyz'][1])
-      data['z'].append(y['xyz'][2])
-      data['text'].append(y[0])
-      data['color'].append(y['d'])
-  return data
-
-
-def scatter3d_color_v1(selected_patient, values, show_brain):
-  colored_data=colored_dic(selected_patient, values)
-  brain = loadmat(brains_path+selected_patient+'.mat', squeeze_me=True)
-  d=[go.Scatter3d(
-    x=[k for k in colored_data['x']],
-    y=[k for k in colored_data['y']],
-    z=[k for k in colored_data['z']],
-    #name=e[0],
-    mode='markers',
-    text=[k for k in colored_data['text']],
-    customdata=[[k, values] for k in colored_data['color']],
-    hovertemplate=
-    "<b>%{text}</b><br>" +
-    "%{customdata[1]} = %{customdata[0]:.02f}<br>" +
-    "<extra></extra>",
-    marker = dict(
-      sizemode='diameter',
-      sizeref=1,
-      color=[k for k in colored_data['color']],
-      colorbar=dict(thickness=20),
-    ),
-    )]
-  if show_brain==[1]:
-    d.append(go.Mesh3d(
-        # 8 vertices of a cube
-        x=[a[0] for a in brain['Vertices']],
-        y=[a[1] for a in brain['Vertices']],
-        z=[a[2] for a in brain['Vertices']],
-        opacity=0.15,
-        # i, j and k give the vertices of triangles
-        i=[a[0]-1 for a in brain['Faces']],
-        j=[a[1]-1 for a in brain['Faces']],
-        k=[a[2]-1 for a in brain['Faces']],
-        name='y',
-        showscale=True
-    ))
-  layout=go.Layout(title="3D Scatterplot needles colored prove", hovermode='closest', scene=dict(xaxis_title='X-axis', yaxis_title='Y-axis', zaxis_title='Z-axis'))
-  fig=go.Figure(data=d, layout=layout)
-  return fig
-
-
-def scatter3d_v1(selected_patient, values, show_brain):
+def scatter3d_v1(selected_patient, values, show_brain, brain_opacity):
   brain = loadmat(brains_path+selected_patient+'.mat', squeeze_me=True)
   data=[]
   x=scatter3d_soz_v1(selected_patient, values)
@@ -396,7 +342,7 @@ def scatter3d_v1(selected_patient, values, show_brain):
         x=[a[0] for a in brain['Vertices']],
         y=[a[1] for a in brain['Vertices']],
         z=[a[2] for a in brain['Vertices']],
-        opacity=0.15,
+        opacity=brain_opacity/100,
         # i, j and k give the vertices of triangles
         i=[a[0]-1 for a in brain['Faces']],
         j=[a[1]-1 for a in brain['Faces']],
@@ -406,6 +352,59 @@ def scatter3d_v1(selected_patient, values, show_brain):
     ))
   layout=go.Layout(title="3D Scatterplot needles prove", hovermode='closest', showlegend=True, scene=dict(xaxis_title='X-axis', yaxis_title='Y-axis', zaxis_title='Z-axis'))
   fig=go.Figure(data=data, layout=layout)
+  return fig
+
+def colored_dic(selected_patient, values):
+  x=scatter3d_soz_v1(selected_patient, values)
+  data={'needle_group':[], 'x':[], 'y':[], 'z':[], 'text':[], 'color':[]}
+  for e in x:
+    for y in e['data']:
+      data['x'].append(y['xyz'][0])
+      data['y'].append(y['xyz'][1])
+      data['z'].append(y['xyz'][2])
+      data['text'].append(y[0])
+      data['color'].append(y['d'])
+  return data
+
+
+def scatter3d_color_v1(selected_patient, values, show_brain, brain_opacity):
+  colored_data=colored_dic(selected_patient, values)
+  brain = loadmat(brains_path+selected_patient+'.mat', squeeze_me=True)
+  d=[go.Scatter3d(
+    x=[k for k in colored_data['x']],
+    y=[k for k in colored_data['y']],
+    z=[k for k in colored_data['z']],
+    #name=e[0],
+    mode='markers',
+    text=[k for k in colored_data['text']],
+    customdata=[[k, values] for k in colored_data['color']],
+    hovertemplate=
+    "<b>%{text}</b><br>" +
+    "%{customdata[1]} = %{customdata[0]:.02f}<br>" +
+    "<extra></extra>",
+    marker = dict(
+      sizemode='diameter',
+      sizeref=1,
+      color=[k for k in colored_data['color']],
+      colorbar=dict(thickness=20),
+    ),
+    )]
+  if show_brain==[1]:
+    d.append(go.Mesh3d(
+        # 8 vertices of a cube
+        x=[a[0] for a in brain['Vertices']],
+        y=[a[1] for a in brain['Vertices']],
+        z=[a[2] for a in brain['Vertices']],
+        opacity=brain_opacity/100,
+        # i, j and k give the vertices of triangles
+        i=[a[0]-1 for a in brain['Faces']],
+        j=[a[1]-1 for a in brain['Faces']],
+        k=[a[2]-1 for a in brain['Faces']],
+        name='y',
+        showscale=True
+    ))
+  layout=go.Layout(title="3D Scatterplot needles colored prove", hovermode='closest', scene=dict(xaxis_title='X-axis', yaxis_title='Y-axis', zaxis_title='Z-axis'))
+  fig=go.Figure(data=d, layout=layout)
   return fig
 
 

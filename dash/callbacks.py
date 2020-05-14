@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import ppanda
+import dash_core_components as dcc
+import dash_html_components as html
 from dash.dependencies import Input, Output
 from app import app
 
@@ -12,8 +14,8 @@ from app import app
         Input("radio-scatter-x-axis", "value"), Input("radio-scatter-y-axis", "value"), Input("dropdown-scatter-legend", "value"),
         Input("dropdown-histogram-legend", "value"), Input("radio-data-histogram", "value"),
         Input("radio-3dscatter-x-axis", "value"), Input("radio-3dscatter-y-axis", "value"), Input("radio-3dscatter-z-axis", "value"), Input("dropdown-3dscatter-legend", "value"),
-        Input("dropdown-needle-variable", "value"), Input("checkbox-brain", "value"),
-        Input("dropdown-needle-variable-colored", "value"), Input("checkbox-brain-colored", "value"),
+        Input("dropdown-needle-variable", "value"), Input("checkbox-brain", "value"), Input("opacity-slider-brain", "value"),
+        Input("dropdown-needle-variable-colored", "value"), Input("checkbox-brain-colored", "value"), Input("opacity-slider-brain-colored", "value"),
     ],
 )
 def update_figure(
@@ -22,8 +24,8 @@ def update_figure(
     scatter_x, scatter_y, selector_scatter, 
     selector_histogram, value_histogram,
     scatter3d_x, scatter3d_y, scatter3d_z, selector_scatter3d,
-    variable_needles, checkbox_brain,
-    variable_needles_colored, checkbox_brain_colored
+    variable_needles, checkbox_brain, brain_opacity,
+    variable_needles_colored, checkbox_brain_colored, colored_brain_opacity
     ):
     if selected_graph == 'multiplot':
         figure = ppanda.mp(selected_patient, selector_multipot, selected_variables)
@@ -41,10 +43,10 @@ def update_figure(
         figure = ppanda.scatter3d(selected_patient, selector_scatter3d, [scatter3d_x, scatter3d_y, scatter3d_z])
         return figure
     elif selected_graph == '3d scatter needles':
-        figure = ppanda.scatter3d_v1(selected_patient, variable_needles, checkbox_brain)
+        figure = ppanda.scatter3d_v1(selected_patient, variable_needles, checkbox_brain, brain_opacity)
         return figure
     elif selected_graph == '3d scatter needles colored':
-        figure = ppanda.scatter3d_color_v1(selected_patient, variable_needles_colored, checkbox_brain_colored)
+        figure = ppanda.scatter3d_color_v1(selected_patient, variable_needles_colored, checkbox_brain_colored, colored_brain_opacity)
         return figure
 
 
@@ -76,6 +78,44 @@ def show_selectors(selected_graph):
         return no, no, no, no, no, yes
     else:
         return no, no, no, no, no, no
+
+@app.callback(
+    [
+        Output("div-opacity-brain", "style"),
+        Output("div-opacity-brain-colored", "style"),
+    ],
+    [
+        Input("checkbox-brain", "value"),
+        Input("checkbox-brain-colored", "value"),
+    ],
+)
+def display_slider_opacity(checked_brain, checked_brain_colored):
+    yes={"display": "block", "margin": "0px 5px 0px 0px"}
+    no={"display": "none"}
+    if checked_brain==[1]:
+        return yes, no
+    if checked_brain_colored==[1]:
+        return no, yes
+    else:
+        return no, no
+
+@app.callback(
+    Output('slider-output-brain', 'children'),
+    [
+        Input('opacity-slider-brain', 'value'),
+    ],
+)
+def update_slider_output_brain(value):
+    return "Brain's opacity: {}".format(value)
+
+@app.callback(
+    Output('slider-output-brain-colored', 'children'),
+    [
+        Input('opacity-slider-brain-colored', 'value'),
+    ],
+)
+def update_slider_output_brain_colored(value):
+    return "Brain's opacity: {}".format(value)
     
 
 '''

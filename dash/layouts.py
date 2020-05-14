@@ -42,6 +42,31 @@ def NamedInlineRadioItems(name, short, options, val, **kwargs):
         ],
     )
 
+def NamedSlider(name, div_id, slider_id, min, max, step, val, value_div_id, marks=None):
+    if marks:
+        step = None
+    else:
+        marks = {i: str(i) for i in range(min, max + 1, step)}
+
+    return html.Div(
+        id=div_id,
+        style={"display": "none"},
+        children=[
+            f"{name}:",
+            dcc.Slider(
+                id=slider_id,
+                min=min,
+                max=max,
+                marks=marks,
+                step=step,
+                value=val,
+            ),
+            html.Div(
+                id=value_div_id
+            ),
+        ],
+    )
+
 layout1=html.Div(
         className="row",
         style={"max-width": "100%", "font-size": "1.5rem", "padding": "0px 0px"},
@@ -248,6 +273,16 @@ layout1=html.Div(
                                                 labelStyle={"display": "inline-block", "padding-top": "20px"},
                                                 style={"display":"inline-block"},
                                             ),
+                                            NamedSlider(
+                                                name="Select brain's opacity",
+                                                div_id="div-opacity-brain",
+                                                slider_id="opacity-slider-brain",
+                                                min=10,
+                                                max=50,
+                                                step=5,
+                                                val=30,
+                                                value_div_id="slider-output-brain"
+                                            ),
                                         ],
                                     ),
                                     html.Div(
@@ -271,6 +306,16 @@ layout1=html.Div(
                                                 inputStyle={"margin-right": "2px"},
                                                 labelStyle={"display": "inline-block", "padding-top": "20px"},
                                                 style={"display":"inline-block"},
+                                            ),
+                                            NamedSlider(
+                                                name="Select brain's opacity",
+                                                div_id="div-opacity-brain-colored",
+                                                slider_id="opacity-slider-brain-colored",
+                                                min=10,
+                                                max=50,
+                                                step=5,
+                                                val=30,
+                                                value_div_id="slider-output-brain-colored"
                                             ),
                                         ],
                                     ),

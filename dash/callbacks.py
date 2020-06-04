@@ -80,24 +80,32 @@ def show_selectors(selected_graph):
         return no, no, no, no, no, no
 
 @app.callback(
-    [
-        Output("div-opacity-brain", "style"),
-        Output("div-opacity-brain-colored", "style"),
-    ],
+    Output("div-opacity-brain", "style"),
     [
         Input("checkbox-brain", "value"),
-        Input("checkbox-brain-colored", "value"),
     ],
 )
-def display_slider_opacity(checked_brain, checked_brain_colored):
+def display_slider_opacity(checked_brain):
     yes={"display": "block", "margin": "0px 5px 0px 0px"}
     no={"display": "none"}
     if checked_brain==[1]:
-        return yes, no
-    if checked_brain_colored==[1]:
-        return no, yes
+        return yes
     else:
-        return no, no
+        return no
+
+@app.callback(
+    Output("div-opacity-brain-colored", "style"),
+    [
+        Input("checkbox-brain-colored", "value"),
+    ],
+)
+def display_slider_opacity_colored(checked_brain_colored):
+    yes={"display": "block", "margin": "0px 5px 0px 0px"}
+    no={"display": "none"}
+    if checked_brain_colored==[1]:
+        return yes
+    else:
+        return no
 
 @app.callback(
     Output('slider-output-brain', 'children'),

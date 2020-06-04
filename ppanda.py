@@ -348,7 +348,7 @@ def scatter3d_v1(selected_patient, values, show_brain, brain_opacity):
         j=[a[1]-1 for a in brain['Faces']],
         k=[a[2]-1 for a in brain['Faces']],
         name='y',
-        showscale=True
+        color='grey',
     ))
   layout=go.Layout(title="3D Scatterplot needles prove", hovermode='closest', showlegend=True, scene=dict(xaxis_title='X-axis', yaxis_title='Y-axis', zaxis_title='Z-axis'))
   fig=go.Figure(data=data, layout=layout)
@@ -401,7 +401,7 @@ def scatter3d_color_v1(selected_patient, values, show_brain, brain_opacity):
         j=[a[1]-1 for a in brain['Faces']],
         k=[a[2]-1 for a in brain['Faces']],
         name='y',
-        showscale=True
+        color= 'grey',
     ))
   layout=go.Layout(title="3D Scatterplot needles colored prove", hovermode='closest', scene=dict(xaxis_title='X-axis', yaxis_title='Y-axis', zaxis_title='Z-axis'))
   fig=go.Figure(data=d, layout=layout)

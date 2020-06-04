@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
 
+import inspect
+import os
+import sys
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import plotly.graph_objects as go
-import os,sys,inspect
+
+import ppanda
 from app import app
 
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir) 
-import ppanda
 
 bioart_logo_path='BIOART_logo.png'
 upc_logo_path='logo_UPC.png'

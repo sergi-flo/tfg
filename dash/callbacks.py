@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-import ppanda
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
+
+import ppanda
 from app import app
+
 
 @app.callback(
         Output("graph-plot","figure"),

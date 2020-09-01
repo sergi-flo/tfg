@@ -5,19 +5,14 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import plotly.graph_objects as go
-import os,sys,inspect
+import data_functions
 from app import app
-
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0,parentdir) 
-import ppanda
 
 bioart_logo_path='BIOART_logo.png'
 upc_logo_path='logo_UPC.png'
 epyHFO_logo_path='epyHFO_logo.png'
 
-patient_list=ppanda.patients()
+patient_list=data_functions.patients()
 selectors=['State', 'Channel', 'Dist', 'Dist_Cat', 'Zone', 'SOZ', 'Pathologic HFO', 'State/Activity']
 scatter_selectors=['State', 'Dist_Cat', 'Zone', 'needles', 'SOZ', 'Pathologic HFO', 'State/Activity']
 values_variables=['Dur f', 'Dur t', 'Area', 'Entropy', 'Perimeter', 'Symmetry T', 'Symmetry F', 'Oscillations', 'Kurtosis', 'Skewness', 'Amplitude', 'Inst freq']
@@ -358,10 +353,10 @@ html.Div(
 '''
 '''
 if selected_graph == "sensors":
-            data_patient=ppanda.pand_sensores(selected_patient)
+            data_patient=data_functions.pand_sensores(selected_patient)
             graph_data=go.Bar(
                 x=[k for k in data_patient.keys()],
-                y=ppanda.dic_to_data(data_patient)[1],
+                y=data_functions.dic_to_data(data_patient)[1],
             )
             layout=go.Layout(
                 title = "Data from Patient " + selected_patient,
@@ -372,10 +367,10 @@ if selected_graph == "sensors":
             point_info={"display": "none"}
             graph_display = {"width": "150%"}
             return figure, point_info, graph_displayif selected_graph == "sensors":
-            data_patient=ppanda.pand_sensores(selected_patient)
+            data_patient=data_functions.pand_sensores(selected_patient)
             graph_data=go.Bar(
                 x=[k for k in data_patient.keys()],
-                y=ppanda.dic_to_data(data_patient)[1],
+                y=data_functions.dic_to_data(data_patient)[1],
             )
             layout=go.Layout(
                 title = "Data from Patient " + selected_patient,

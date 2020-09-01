@@ -4,7 +4,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 
-import ppanda
+import needle
 from app import app
 
 
@@ -30,25 +30,25 @@ def update_figure(
     variable_needles_colored, checkbox_brain_colored, colored_brain_opacity
     ):
     if selected_graph == 'multiplot':
-        figure = ppanda.mp(selected_patient, selector_multipot, selected_variables)
+        figure = data_functions.mp(selected_patient, selector_multipot, selected_variables)
         return figure
     elif selected_graph == 'scatterplot':
-        figure = ppanda.scatter(selected_patient, selector_scatter, [scatter_x, scatter_y])
+        figure = data_functions.scatter(selected_patient, selector_scatter, [scatter_x, scatter_y])
         return figure
     elif selected_graph == 'histogram':
-        figure = ppanda.histogram(selected_patient, selector_histogram, value_histogram)
+        figure = data_functions.histogram(selected_patient, selector_histogram, value_histogram)
         return figure
     elif selected_graph == 'heatmap':
-        figure = ppanda.heatmap()
+        figure = data_functions.heatmap()
         return figure
     elif selected_graph == '3d scatter':
-        figure = ppanda.scatter3d(selected_patient, selector_scatter3d, [scatter3d_x, scatter3d_y, scatter3d_z])
+        figure = data_functions.scatter3d(selected_patient, selector_scatter3d, [scatter3d_x, scatter3d_y, scatter3d_z])
         return figure
     elif selected_graph == '3d scatter needles':
-        figure = ppanda.scatter3d_v1(selected_patient, variable_needles, checkbox_brain, brain_opacity)
+        figure = data_functions.scatter3d_v1(selected_patient, variable_needles, checkbox_brain, brain_opacity)
         return figure
     elif selected_graph == '3d scatter needles colored':
-        figure = ppanda.scatter3d_color_v1(selected_patient, variable_needles_colored, checkbox_brain_colored, colored_brain_opacity)
+        figure = data_functions.scatter3d_color_v1(selected_patient, variable_needles_colored, checkbox_brain_colored, colored_brain_opacity)
         return figure
 
 

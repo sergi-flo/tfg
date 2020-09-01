@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 from scipy.io import loadmat
 
-file_path='excel/hfos_clean.csv'
+file_path='data_csv/hfos_clean.csv'
 brains_path ='brains/brain'
 positions_path = 'brains/positions'
 
@@ -27,19 +27,6 @@ def needles_list(patient=None, all=False):
       res.append(ee)
   return res
 
-def pand():
-  out,noOut= 0,0
-  d=load_panda()
-  #print(data[data.columns[0]])
-  #print(data)
-  for e in d['Zone']:
-    if 'Outside' in e:
-      out +=1
-    else:
-      noOut +=1
-  total=out+noOut
-  print(out, noOut, total)
-
 def patients():
   d=load_panda()
   patients_list=[]
@@ -59,15 +46,6 @@ def pand_sensores(selected_patient):
         dic[channel] = [amplitude]
   #print(dic, len(dic))
   return dic
-
-def dic_to_data(d):
-  x=[]
-  y=[]
-  for sensor in d:
-    x.append(sensor)
-    median=sum([float(e) for e in d[sensor]])/len(d[sensor])
-    y.append(median)
-  return x,y
 
 def multiplot_soz1(selected_patient, *args):
   d=load_panda()
@@ -410,3 +388,15 @@ def scatter3d_color_v1(selected_patient, values, show_brain, brain_opacity):
 
 if __name__=='__main__':
   pand_sensores()
+
+
+'''
+def dic_to_data(d):
+  x=[]
+  y=[]
+  for sensor in d:
+    x.append(sensor)
+    median=sum([float(e) for e in d[sensor]])/len(d[sensor])
+    y.append(median)
+  return x,y
+'''

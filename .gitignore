@@ -7,4 +7,5 @@ p.py
 brains
 docs/
 *.csv
+data_csv
 *.jar

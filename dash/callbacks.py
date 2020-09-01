@@ -30,7 +30,7 @@ def update_figure(
     variable_needles_colored, checkbox_brain_colored, colored_brain_opacity
     ):
     if selected_graph == 'multiplot':
-        figure = data_functions.mp(selected_patient, selector_multipot, selected_variables)
+        figure = data_functions.multiplot(selected_patient, selector_multipot, selected_variables)
         return figure
     elif selected_graph == 'scatterplot':
         figure = data_functions.scatter(selected_patient, selector_scatter, [scatter_x, scatter_y])
@@ -45,10 +45,10 @@ def update_figure(
         figure = data_functions.scatter3d(selected_patient, selector_scatter3d, [scatter3d_x, scatter3d_y, scatter3d_z])
         return figure
     elif selected_graph == '3d scatter needles':
-        figure = data_functions.scatter3d_v1(selected_patient, variable_needles, checkbox_brain, brain_opacity)
+        figure = data_functions.scatter3d_needles(selected_patient, variable_needles, checkbox_brain, brain_opacity)
         return figure
     elif selected_graph == '3d scatter needles colored':
-        figure = data_functions.scatter3d_color_v1(selected_patient, variable_needles_colored, checkbox_brain_colored, colored_brain_opacity)
+        figure = data_functions.scatter3d_color_needles(selected_patient, variable_needles_colored, checkbox_brain_colored, colored_brain_opacity)
         return figure
 
 

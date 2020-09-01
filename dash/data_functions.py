@@ -7,7 +7,7 @@ from scipy.io import loadmat
 
 file_path='dash/data_csv/HFOs_clean.csv'
 brains_path ='dash/brains/brain'
-positions_path = 'dash/brains/positions'
+positions_path ='dash/brains/positions'
 
 def load_panda():
   d=pd.read_csv(file_path)
@@ -47,26 +47,7 @@ def pand_sensores(selected_patient):
   #print(dic, len(dic))
   return dic
 
-def multiplot_soz1(selected_patient, *args):
-  d=load_panda()
-  filtered_d=d.loc[d['Patient']==selected_patient]
-  dic={'Zone':[]}
-  for zone in filtered_d['Zone']:
-    if 'Outside' in zone:
-      dic['Zone'].append(0)
-    else:
-      dic['Zone'].append(1) 
-  for e in args:
-    dic[e]=[]
-    for row_zone, row_e in zip(filtered_d['Zone'], filtered_d[e]):
-      if 'Propagation' in row_zone:
-        pass
-      else:
-        dic[e].append(row_e)
-  return dic
-
-
-def multiplot_soz(selected_patient, selector, args):
+def multiplot_data(selected_patient, selector, args):
   d=load_panda()
   filtered_d=d.loc[d['Patient']==selected_patient]
   needles=needles_list(selected_patient)
@@ -98,8 +79,8 @@ def multiplot_soz(selected_patient, selector, args):
             e[y].append(row_e)
   return res
 
-def mp(selected_patient, selector, values):
-  x=multiplot_soz(selected_patient, selector, values)
+def multiplot(selected_patient, selector, values):
+  x=multiplot_data(selected_patient, selector, values)
   data=[]
   for e in x:
     d=go.Splom(
@@ -108,11 +89,11 @@ def mp(selected_patient, selector, values):
     marker=dict(size=4),
     diagonal=dict(visible=False))
     data.append(d)
-  layout=go.Layout(title="Multiplot prove", dragmode='select', hovermode='closest', showlegend=True)
+  layout=go.Layout(title="Multiplot", dragmode='select', hovermode='closest', showlegend=True)
   fig=go.Figure(data=data,layout=layout)
   return fig
 
-def scatter_soz(selected_patient, selector, args): #args=[x,y]
+def scatter_data(selected_patient, selector, args): #args=[x,y]
   d=load_panda()
   filtered_d=d.loc[d['Patient']==selected_patient]
   needles=needles_list(selected_patient)
@@ -140,7 +121,7 @@ def scatter_soz(selected_patient, selector, args): #args=[x,y]
   return res
 
 def scatter(selected_patient, selector, values):
-  x=scatter_soz(selected_patient, selector, values)
+  x=scatter_data(selected_patient, selector, values)
   data=[]
   for e in x:
     d=go.Scatter(
@@ -150,11 +131,11 @@ def scatter(selected_patient, selector, values):
       mode='markers',
       marker=dict(size=4))
     data.append(d)
-  layout=go.Layout(title="Scatterplot prove", hovermode='closest', showlegend=True, xaxis_title=values[0], yaxis_title=values[1])
+  layout=go.Layout(title="Scatterplot", hovermode='closest', showlegend=True, xaxis_title=values[0], yaxis_title=values[1])
   fig=go.Figure(data=data, layout=layout)
   return fig
 
-def histogram_soz(selected_patient, selector, args): #args=[x,y]
+def histogram_data(selected_patient, selector, args): #args=[x,y]
   d=load_panda()
   filtered_d=d.loc[d['Patient']==selected_patient]
   needles=needles_list(selected_patient)
@@ -183,7 +164,7 @@ def histogram_soz(selected_patient, selector, args): #args=[x,y]
   return res
 
 def histogram(selected_patient, selector, value):
-  x=histogram_soz(selected_patient, selector, value)
+  x=histogram_data(selected_patient, selector, value)
   data=[]
   for e in x:
     d=go.Histogram(
@@ -192,7 +173,7 @@ def histogram(selected_patient, selector, value):
       opacity=0.75,
       bingroup=1)
     data.append(d)
-  layout=go.Layout(title_text="Histogram prove", showlegend=True, xaxis_title_text=value, yaxis_title_text='Count', barmode='overlay')
+  layout=go.Layout(title_text="Histogram", showlegend=True, xaxis_title_text=value, yaxis_title_text='Count', barmode='overlay')
   fig=go.Figure(data=data, layout=layout)
   return fig
 
@@ -202,11 +183,11 @@ def heatmap():
   data=go.Heatmap(
     z=mat_data
   )
-  layout=go.Layout(title_text="Heatmap prove", showlegend=True, xaxis_title_text='X-axis', yaxis_title_text='Y-axis')
+  layout=go.Layout(title_text="Heatmap", showlegend=True, xaxis_title_text='X-axis', yaxis_title_text='Y-axis')
   fig=go.Figure(data=data, layout=layout)
   return fig
 
-def scatter3d_soz(selected_patient, selector, args): #args=[x,y,z]
+def scatter3d_data(selected_patient, selector, args): #args=[x,y,z]
   d=load_panda()
   filtered_d=d.loc[d['Patient']==selected_patient]
   needles=needles_list(selected_patient)
@@ -236,7 +217,7 @@ def scatter3d_soz(selected_patient, selector, args): #args=[x,y,z]
   return res
 
 def scatter3d(selected_patient, selector, values):
-  x=scatter3d_soz(selected_patient, selector, values)
+  x=scatter3d_data(selected_patient, selector, values)
   data=[]
   for e in x:
     d=go.Scatter3d(
@@ -247,7 +228,7 @@ def scatter3d(selected_patient, selector, values):
       mode='markers',
       marker=dict(size=4))
     data.append(d)
-  layout=go.Layout(title="3D Scatterplot prove", hovermode='closest', showlegend=True, scene=dict(xaxis_title=values[0], yaxis_title=values[1], zaxis_title=values[2]))
+  layout=go.Layout(title="3D Scatterplot", hovermode='closest', showlegend=True, scene=dict(xaxis_title=values[0], yaxis_title=values[1], zaxis_title=values[2]))
   fig=go.Figure(data=data, layout=layout)
   return fig
 
@@ -263,7 +244,7 @@ def list_needles_3dscatter(filtered_d, needles):
     res.append(dic)
   return res
 
-def scatter3d_soz_v1(selected_patient, args):
+def scatter3d_needles_data(selected_patient, args):
   d=load_panda()
   filtered_d=d.loc[d['Patient']==selected_patient]
   needles=needles_list()
@@ -290,10 +271,10 @@ def scatter3d_soz_v1(selected_patient, args):
       y['d_scale']=scale
   return res
 
-def scatter3d_v1(selected_patient, values, show_brain, brain_opacity):
+def scatter3d_needles(selected_patient, values, show_brain, brain_opacity):
   brain = loadmat(brains_path+selected_patient+'.mat', squeeze_me=True)
   data=[]
-  x=scatter3d_soz_v1(selected_patient, values)
+  x=scatter3d_needles_data(selected_patient, values)
   for e in x:
     d=go.Scatter3d(
       x=[k['xyz'][0] for k in e['data']],
@@ -328,12 +309,12 @@ def scatter3d_v1(selected_patient, values, show_brain, brain_opacity):
         name='y',
         color='grey',
     ))
-  layout=go.Layout(title="3D Scatterplot needles prove", hovermode='closest', showlegend=True, scene=dict(xaxis_title='X-axis', yaxis_title='Y-axis', zaxis_title='Z-axis'))
+  layout=go.Layout(title="3D Scatterplot needles", hovermode='closest', showlegend=True, scene=dict(xaxis_title='X-axis', yaxis_title='Y-axis', zaxis_title='Z-axis'))
   fig=go.Figure(data=data, layout=layout)
   return fig
 
 def colored_dic(selected_patient, values):
-  x=scatter3d_soz_v1(selected_patient, values)
+  x=scatter3d_needles_data(selected_patient, values)
   data={'needle_group':[], 'x':[], 'y':[], 'z':[], 'text':[], 'color':[]}
   for e in x:
     for y in e['data']:
@@ -345,7 +326,7 @@ def colored_dic(selected_patient, values):
   return data
 
 
-def scatter3d_color_v1(selected_patient, values, show_brain, brain_opacity):
+def scatter3d_color_needles(selected_patient, values, show_brain, brain_opacity):
   colored_data=colored_dic(selected_patient, values)
   brain = loadmat(brains_path+selected_patient+'.mat', squeeze_me=True)
   d=[go.Scatter3d(
@@ -381,7 +362,7 @@ def scatter3d_color_v1(selected_patient, values, show_brain, brain_opacity):
         name='y',
         color= 'grey',
     ))
-  layout=go.Layout(title="3D Scatterplot needles colored prove", hovermode='closest', scene=dict(xaxis_title='X-axis', yaxis_title='Y-axis', zaxis_title='Z-axis'))
+  layout=go.Layout(title="3D Scatterplot needles colored", hovermode='closest', scene=dict(xaxis_title='X-axis', yaxis_title='Y-axis', zaxis_title='Z-axis'))
   fig=go.Figure(data=d, layout=layout)
   return fig
 
@@ -399,4 +380,23 @@ def dic_to_data(d):
     median=sum([float(e) for e in d[sensor]])/len(d[sensor])
     y.append(median)
   return x,y
+
+
+def multiplot_soz1(selected_patient, *args):
+  d=load_panda()
+  filtered_d=d.loc[d['Patient']==selected_patient]
+  dic={'Zone':[]}
+  for zone in filtered_d['Zone']:
+    if 'Outside' in zone:
+      dic['Zone'].append(0)
+    else:
+      dic['Zone'].append(1) 
+  for e in args:
+    dic[e]=[]
+    for row_zone, row_e in zip(filtered_d['Zone'], filtered_d[e]):
+      if 'Propagation' in row_zone:
+        pass
+      else:
+        dic[e].append(row_e)
+  return dic
 '''

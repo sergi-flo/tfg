@@ -5,9 +5,9 @@ import plotly.graph_objects as go
 import plotly.express as px
 from scipy.io import loadmat
 
-file_path='data_csv/hfos_clean.csv'
-brains_path ='brains/brain'
-positions_path = 'brains/positions'
+file_path='dash/data_csv/HFOs_clean.csv'
+brains_path ='dash/brains/brain'
+positions_path = 'dash/brains/positions'
 
 def load_panda():
   d=pd.read_csv(file_path)

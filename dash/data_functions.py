@@ -325,7 +325,6 @@ def colored_dic(selected_patient, values):
       data['color'].append(y['d'])
   return data
 
-
 def scatter3d_color_needles(selected_patient, values, show_brain, brain_opacity):
   colored_data=colored_dic(selected_patient, values)
   brain = loadmat(brains_path+selected_patient+'.mat', squeeze_me=True)

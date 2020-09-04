@@ -11,12 +11,16 @@ from app import app
 bioart_logo_path='BIOART_logo.png'
 upc_logo_path='logo_UPC.png'
 epyHFO_logo_path='epyHFO_logo.png'
+path_info_intro="dash/description_intro.md"
 
 patient_list=data_functions.patients()
 selectors=['State', 'Channel', 'Dist', 'Dist_Cat', 'Zone', 'SOZ', 'Pathologic HFO', 'State/Activity']
 scatter_selectors=['State', 'Dist_Cat', 'Zone', 'needles', 'SOZ', 'Pathologic HFO', 'State/Activity']
 values_variables=['Dur f', 'Dur t', 'Area', 'Entropy', 'Perimeter', 'Symmetry T', 'Symmetry F', 'Oscillations', 'Kurtosis', 'Skewness', 'Amplitude', 'Inst freq']
 graphics=["Multiplot", "Scatterplot", "Histogram", "Heatmap", "3D Scatter", "3D Scatter Needles", "3D Scatter Needles Colored"]
+
+with open(path_info_intro, "r") as file:
+    description_intro = file.read()
 
 def Card(children, **kawrgs):
     return html.Section(children, className="card-style")
@@ -104,7 +108,7 @@ layout1=html.Div(
                 style={"padding": "50px 45px"},
                 children=[
                     html.Div(
-                        id="description-text", children=dcc.Markdown('Explanation here')
+                        id="description-text", children=dcc.Markdown(description_intro)
                     ),
                     html.Div(
                         html.Button(id="learn-more-button", children=["Learn More"])

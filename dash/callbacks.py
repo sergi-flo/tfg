@@ -7,6 +7,43 @@ from dash.dependencies import Input, Output
 import data_functions
 from app import app
 
+path_info_intro="dash/description_intro.md"
+path_info_all="dash/description.md"
+
+with open(path_info_intro, "r") as file:
+    description_intro = file.read()
+
+with open(path_info_all, "r") as file:
+    description = file.read()
+
+@app.callback(
+    [
+        Output("description-text", "children"),
+        Output("learn-more-button", "children"),
+    ],
+    [Input("learn-more-button", "n_clicks")],
+)
+def learn_more(n_clicks):
+    if n_clicks is None:
+        n_clicks = 0
+    if (n_clicks % 2) == 1:
+        n_clicks += 1
+        return (
+            html.Div(
+                style={"padding-right": "15%"},
+                children=[dcc.Markdown(description)],
+            ),
+            "Close",
+        )
+    else:
+        n_clicks += 1
+        return (
+            html.Div(
+                style={"padding-right": "15%"},
+                children=[dcc.Markdown(description_intro)],
+            ),
+            "Learn More",
+        )
 
 @app.callback(
         Output("graph-plot","figure"),

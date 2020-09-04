@@ -9,18 +9,16 @@ file_path='dash/data_csv/HFOs_clean.csv'
 brains_path ='dash/brains/brain'
 positions_path ='dash/brains/positions'
 
-def load_panda():
+def load_csv():
   d=pd.read_csv(file_path)
   labels=[i for i in d]
   return d[labels[1:]]
 
-def needles_list(patient=None, all=False):
-  d=load_panda()
+def needles_list(patient=None):
+  d=load_csv()
   if patient!=None:
     d=d.loc[d['Patient']==patient]
   res=[]
-  if all:
-    res.append('All')
   for e in d['Channel']:
     ee=''.join(filter(str.isalpha, e))
     if ee not in res:
@@ -28,27 +26,15 @@ def needles_list(patient=None, all=False):
   return res
 
 def patients():
-  d=load_panda()
+  d=load_csv()
   patients_list=[]
   for patient in d['Patient']:
     if patient not in patients_list:
       patients_list.append(patient)
   return patients_list
 
-def pand_sensores(selected_patient):
-  dic={}
-  d=load_panda()
-  for amplitude, patient, channel in zip(d['Amplitude'],d['Patient'],d['Channel']):
-    if selected_patient in patient:
-      if channel in dic:
-        dic[channel].append(amplitude)
-      else:
-        dic[channel] = [amplitude]
-  #print(dic, len(dic))
-  return dic
-
 def multiplot_data(selected_patient, selector, args):
-  d=load_panda()
+  d=load_csv()
   filtered_d=d.loc[d['Patient']==selected_patient]
   needles=needles_list(selected_patient)
   a=[]
@@ -94,7 +80,7 @@ def multiplot(selected_patient, selector, values):
   return fig
 
 def scatter_data(selected_patient, selector, args): #args=[x,y]
-  d=load_panda()
+  d=load_csv()
   filtered_d=d.loc[d['Patient']==selected_patient]
   needles=needles_list(selected_patient)
   a=[]
@@ -136,7 +122,7 @@ def scatter(selected_patient, selector, values):
   return fig
 
 def histogram_data(selected_patient, selector, args): #args=[x,y]
-  d=load_panda()
+  d=load_csv()
   filtered_d=d.loc[d['Patient']==selected_patient]
   needles=needles_list(selected_patient)
   a=[]
@@ -188,7 +174,7 @@ def heatmap():
   return fig
 
 def scatter3d_data(selected_patient, selector, args): #args=[x,y,z]
-  d=load_panda()
+  d=load_csv()
   filtered_d=d.loc[d['Patient']==selected_patient]
   needles=needles_list(selected_patient)
   a=[]
@@ -245,9 +231,8 @@ def list_needles_3dscatter(filtered_d, needles):
   return res
 
 def scatter3d_needles_data(selected_patient, args):
-  d=load_panda()
+  d=load_csv()
   filtered_d=d.loc[d['Patient']==selected_patient]
-  needles=needles_list()
   res=list_needles_3dscatter(filtered_d, needles_list(selected_patient))
   for e in res:
     for y in e['data']:
@@ -367,7 +352,7 @@ def scatter3d_color_needles(selected_patient, values, show_brain, brain_opacity)
 
 
 if __name__=='__main__':
-  pand_sensores()
+  pass
 
 
 '''
@@ -380,9 +365,20 @@ def dic_to_data(d):
     y.append(median)
   return x,y
 
+def pand_sensores(selected_patient):
+  dic={}
+  d=load_csv()
+  for amplitude, patient, channel in zip(d['Amplitude'],d['Patient'],d['Channel']):
+    if selected_patient in patient:
+      if channel in dic:
+        dic[channel].append(amplitude)
+      else:
+        dic[channel] = [amplitude]
+  #print(dic, len(dic))
+  return dic
 
 def multiplot_soz1(selected_patient, *args):
-  d=load_panda()
+  d=load_csv()
   filtered_d=d.loc[d['Patient']==selected_patient]
   dic={'Zone':[]}
   for zone in filtered_d['Zone']:

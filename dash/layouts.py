@@ -11,7 +11,7 @@ from app import app
 bioart_logo_path='BIOART_logo.png'
 upc_logo_path='logo_UPC.png'
 epyHFO_logo_path='epyHFO_logo.png'
-path_info_intro="dash/description_intro.md"
+path_info_intro="description_intro.md"
 
 patient_list=data_functions.patients()
 selectors=['State', 'Channel', 'Dist', 'Dist_Cat', 'Zone', 'SOZ', 'Pathologic HFO', 'State/Activity']

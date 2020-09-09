@@ -7,8 +7,8 @@ from dash.dependencies import Input, Output
 import data_functions
 from app import app
 
-path_info_intro="dash/description_intro.md"
-path_info_all="dash/description.md"
+path_info_intro="description_intro.md"
+path_info_all="description.md"
 
 with open(path_info_intro, "r") as file:
     description_intro = file.read()

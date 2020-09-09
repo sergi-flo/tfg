@@ -5,9 +5,9 @@ import plotly.graph_objects as go
 import plotly.express as px
 from scipy.io import loadmat
 
-file_path='dash/data_csv/HFOs_clean.csv'
-brains_path ='dash/brains/brain'
-positions_path ='dash/brains/positions'
+file_path='data_csv/HFOs_clean.csv'
+brains_path ='brains/brain'
+positions_path ='brains/positions'
 
 def load_csv():
   d=pd.read_csv(file_path)
@@ -300,7 +300,7 @@ def scatter3d_needles(selected_patient, values, show_brain, brain_opacity):
 
 def colored_dic(selected_patient, values):
   x=scatter3d_needles_data(selected_patient, values)
-  data={'needle_group':[], 'x':[], 'y':[], 'z':[], 'text':[], 'color':[]}
+  data={'x':[], 'y':[], 'z':[], 'text':[], 'color':[]}
   for e in x:
     for y in e['data']:
       data['x'].append(y['xyz'][0])

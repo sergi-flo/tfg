@@ -163,17 +163,3 @@ def update_slider_output_brain(value):
 )
 def update_slider_output_brain_colored(value):
     return "Brain's opacity: {}".format(value)
-    
-
-'''
-    @app.callback(
-        Output("div-plot-click-message", "children"),
-        [Input("graph-plot", "clickData")],
-    )
-    def display_click_message(clickData):
-        # Displays message shown when a point in the graph is clicked, depending whether it's an image or word
-        if clickData:
-            return "Clicked a point in the graph"
-        else:
-            return "Click a data point on the scatter plot to display its corresponding image."
-'''

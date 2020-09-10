@@ -164,7 +164,7 @@ def histogram(selected_patient, selector, value):
   return fig
 
 def heatmap():
-  mat = loadmat('excel/data.mat')
+  mat = loadmat('data_csv/data.mat')
   mat_data = mat['stockwell']
   data=go.Heatmap(
     z=mat_data
@@ -353,45 +353,3 @@ def scatter3d_color_needles(selected_patient, values, show_brain, brain_opacity)
 
 if __name__=='__main__':
   pass
-
-
-'''
-def dic_to_data(d):
-  x=[]
-  y=[]
-  for sensor in d:
-    x.append(sensor)
-    median=sum([float(e) for e in d[sensor]])/len(d[sensor])
-    y.append(median)
-  return x,y
-
-def pand_sensores(selected_patient):
-  dic={}
-  d=load_csv()
-  for amplitude, patient, channel in zip(d['Amplitude'],d['Patient'],d['Channel']):
-    if selected_patient in patient:
-      if channel in dic:
-        dic[channel].append(amplitude)
-      else:
-        dic[channel] = [amplitude]
-  #print(dic, len(dic))
-  return dic
-
-def multiplot_soz1(selected_patient, *args):
-  d=load_csv()
-  filtered_d=d.loc[d['Patient']==selected_patient]
-  dic={'Zone':[]}
-  for zone in filtered_d['Zone']:
-    if 'Outside' in zone:
-      dic['Zone'].append(0)
-    else:
-      dic['Zone'].append(1) 
-  for e in args:
-    dic[e]=[]
-    for row_zone, row_e in zip(filtered_d['Zone'], filtered_d[e]):
-      if 'Propagation' in row_zone:
-        pass
-      else:
-        dic[e].append(row_e)
-  return dic
-'''

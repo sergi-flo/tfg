@@ -330,59 +330,6 @@ layout1=html.Div(
                     ),
                 ],
             ),
-            #Header
-            #html.Footer(
-            #    f"Web-App Copyright © 2020",
-            #    className="row footer",
-            #    id="app-footer",
-            #    style={"background-color": "#f9f9f9", "text-align": "center"},
-            #),
         ],
     )
 
-'''
-
-html.Div(
-    id="div-multiplot",
-    style={"display": "none"},
-    children=[
-        NamedInlineRadioItems(
-            name="Selectors",
-            short="selectors-display-mode",
-            options=[{"label":" "+k, "value":k.lower()} for k in selectors],
-            val=selectors[0].lower(),
-        ),
-    ],
- ),
-'''
-'''
-if selected_graph == "sensors":
-            data_patient=data_functions.pand_sensores(selected_patient)
-            graph_data=go.Bar(
-                x=[k for k in data_patient.keys()],
-                y=data_functions.dic_to_data(data_patient)[1],
-            )
-            layout=go.Layout(
-                title = "Data from Patient " + selected_patient,
-                xaxis_title = "Channel",
-                yaxis_title = "Amplitude",
-            )
-            figure = go.Figure(data=graph_data, layout=layout)
-            point_info={"display": "none"}
-            graph_display = {"width": "150%"}
-            return figure, point_info, graph_displayif selected_graph == "sensors":
-            data_patient=data_functions.pand_sensores(selected_patient)
-            graph_data=go.Bar(
-                x=[k for k in data_patient.keys()],
-                y=data_functions.dic_to_data(data_patient)[1],
-            )
-            layout=go.Layout(
-                title = "Data from Patient " + selected_patient,
-                xaxis_title = "Channel",
-                yaxis_title = "Amplitude",
-            )
-            figure = go.Figure(data=graph_data, layout=layout)
-            point_info={"display": "none"}
-            graph_display = {"width": "150%"}
-            return figure, point_info, graph_display
-'''

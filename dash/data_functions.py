@@ -349,7 +349,3 @@ def scatter3d_color_needles(selected_patient, values, show_brain, brain_opacity)
   layout=go.Layout(title="3D Scatterplot needles colored", hovermode='closest', scene=dict(xaxis_title='X-axis', yaxis_title='Y-axis', zaxis_title='Z-axis'))
   fig=go.Figure(data=d, layout=layout)
   return fig
-
-
-if __name__=='__main__':
-  pass

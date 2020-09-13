@@ -1,32 +1,33 @@
-# Actualitzacions en el codi del TFG
+# Code from all the Bachelor Thesis Web Application
 
-## 2/4/20 Actualització
-**-Fet**
+### REQUERIMENTS
+- Pyhton version: Pythonn3.6.4
+- Modules installed:
+    - Dash (version 1.9.1)
+    - Pandas (version 1.0.3)
+    - Scipy (version 1.4.1)
+    - Plotly (version 4.5.4)
+- You will also need the data file, and the files to display the brains. If you would like to deploy the app with the data from the project please see the personal information to contact me, or contact the Bachelor tutor Carolina Migliorelli. When you have the files, the data file belongs to the data_csv folder and the brains file belongs to the brains folder. If despite doing the steps explained the web dosen't work, you will have to change the variable file path from the data_functions file, to match the actual file path.
 
-    He borrat arxius que ja no eren necessaris (graphs.py, main.py).
-    He afegir retroacció perque canvi el gràfic depenent del pacient seleccionat.
-    He afegit retroacció per canviar el tipus de grafic, de moment només hi ha dos (gràfic de barres dels sensors i un multiplot que te en compte freqüencia, amplitud i oscilacions).
-    L'usuari pot canviar entre els diferents pacients que hi ha i els diferents gràfics simultaneament.
-    En el gràfic multiplot, l'usuari por seleccionar si només vol visualtizar les dades SOZ, Outside o les dues a la vegada.
-**-TODO**
+### HOW TO RUN THE WEBAPP
 
-    Afegir que l'usuari pugui seleccionar quines caracteristiques es mostren en el multiplot.
-    Afegir els grafics boxplot.
-    Mirar a veure si es pot fer histogrames a la diagonal del multiplot.
-    Començar a mirar gràfics 3D.
-    Corregir escala dels gràfics de barra perque es puguin llegir tots els noms del sensors.
-    Mirar com es pot implementar visualització de dades a la dreta del gràfic.
-    Ficar etiquetes per electrodes, per poder clasificar-los.
-    Scatter, Barres, Heat Map, Line plot, Histograma, 3D Plot.
+To deploy and run the web application, just make sure you have installed the requeriments. Then just run the command:
 
-## 17/4/20 Actualització
-**-Fet**
+    python3 index.py
 
-    He afegit que l'usuari pugui seleccionar d'una checklist variables a mostrar en multiplot.
+This will deploy the dash server and after running the commang you can click on the link that the python interpreter shows, or you can go to a browser and go to: 
+>http://127.0.0.1:8050/
 
 
-**-TODO**
 
-    Fer grafiques 3d punts, magnitud y selector
-    heatmap
-    3d amb 3 varible
+### EXPLANATION
+
+This web page is the result from a Bachelor Thesis realized during the last year of the Industrial Engineering Bachelor cursed in ETSEIB, UPC. This is an interactive web, where anyone that is interested in the epilepsy area can visualize some data from various patients that are affected by this disease. Not only the graphic displayed in this web is interactive, meaning that you can move, zoom in and zoom out in it, but you can also select which variables are displayed in it. If anyone wants, can modify this code to show his data, knowing that he will have to change some parts of the code to work with his data. 
+
+
+### CONTACT INFORMATION
+
+This web page was created by **the student Sergi Flo Salinas** and supervised by **the teacher Carolina Migliorelli**. It was created for his Bachelor Thesis of 2020. If you would like to know more about how it was done or the making of all the web page please use the contact info shown below:
+
+**Telephone number: 680235011**  
+**E-mail address: sergi.f.s.9@gmail.com**

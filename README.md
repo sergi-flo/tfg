@@ -2,11 +2,13 @@
 
 ### REQUERIMENTS
 - Pyhton version: Pythonn3.6.4
+
 - Modules installed:
     - Dash (version 1.9.1)
     - Pandas (version 1.0.3)
     - Scipy (version 1.4.1)
     - Plotly (version 4.5.4)
+
 - You will also need the data file, and the files to display the brains. If you would like to deploy the app with the data from the project please see the personal information to contact me, or contact the Bachelor tutor Carolina Migliorelli. When you have the files, the data file belongs to the data_csv folder and the brains file belongs to the brains folder. If despite doing the steps explained the web dosen't work, you will have to change the variable file path from the data_functions file, to match the actual file path.
 
 ### HOW TO RUN THE WEBAPP

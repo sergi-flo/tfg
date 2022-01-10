@@ -1,6 +1,11 @@
 # Code from all the Bachelor Thesis Web Application
 
+### EXPLANATION
+
+This web page is the result from a Bachelor Thesis realized during the last year of the Industrial Engineering Bachelor cursed in ETSEIB, UPC. This is an interactive web, where anyone that is interested in the epilepsy area can visualize some data from various patients that are affected by this disease. Not only the graphic displayed in this web is interactive, meaning that you can move, zoom in and zoom out in it, but you can also select which variables are displayed in it. If anyone wants, can modify this code to show his data, knowing that he will have to change some parts of the code to work with his data. 
+
 ### REQUERIMENTS
+
 - Pyhton version: Pythonn3.6.4
 
 - Modules installed:
@@ -19,13 +24,6 @@ To deploy and run the web application, just make sure you have installed the req
 
 This will deploy the dash server and after running the commang you can click on the link that the python interpreter shows, or you can go to a browser and go to: 
 >http://127.0.0.1:8050/
-
-
-
-### EXPLANATION
-
-This web page is the result from a Bachelor Thesis realized during the last year of the Industrial Engineering Bachelor cursed in ETSEIB, UPC. This is an interactive web, where anyone that is interested in the epilepsy area can visualize some data from various patients that are affected by this disease. Not only the graphic displayed in this web is interactive, meaning that you can move, zoom in and zoom out in it, but you can also select which variables are displayed in it. If anyone wants, can modify this code to show his data, knowing that he will have to change some parts of the code to work with his data. 
-
 
 ### CONTACT INFORMATION
 

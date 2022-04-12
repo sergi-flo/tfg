@@ -29,5 +29,4 @@ This will deploy the dash server and after running the commang you can click on 
 
 This web page was created by **the student Sergi Flo Salinas** and supervised by **the teacher Carolina Migliorelli**. It was created for his Bachelor Thesis of 2020. If you would like to know more about how it was done or the making of all the web page please use the contact info shown below:
 
-**Telephone number: 680235011**  
 **E-mail address: sergi.f.s.9@gmail.com**

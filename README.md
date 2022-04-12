@@ -1,6 +1,6 @@
 # Code from all the Bachelor Thesis Web Application
 
-Web where the app is being hosted:
+URL where the app is being hosted:
 
 **[https://sergi-flo.duckdns.org/tfg/](https://sergi-flo.duckdns.org/tfg/)**
 

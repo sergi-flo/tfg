@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
+from dash import dcc, html, Input, Output
 
 import data_functions
 from app import app

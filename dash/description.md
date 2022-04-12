@@ -29,7 +29,10 @@ In both of the 3D Scatter Needles and 3D Scatter Needles Colored, you can also d
 
 ### CONTACT INFORMATION
 
-This web page was created by **the student Sergi Flo Salinas** and supervised by **the teacher Carolina Migliorelli**. It was created for his Bachelor Thesis of 2020. If you would like to know more about how it was done or the making of all the web page please use the contact info shown below:
+This web page was created by **the student Sergi Flo Salinas** and supervised by **the teacher Carolina Migliorelli**. It was created for his Bachelor Thesis of 2020. The source code of the project can be viewed on the github page:
 
-**Telephone number: 680235011**  
+**[https://github.com/sergi-flo/tfg](https://github.com/sergi-flo/tfg)**
+
+If you would like to know more about how it was done or the making of all the web page please use the contact info shown below:
+
 **E-mail address: sergi.f.s.9@gmail.com**

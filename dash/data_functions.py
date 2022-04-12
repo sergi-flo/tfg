@@ -7,7 +7,7 @@ from scipy.io import loadmat
 
 file_path='data_csv/HFOs_clean.csv'
 brains_path ='brains/brain'
-positions_path ='brains/positions'
+#positions_path ='brains/positions'
 
 def load_csv():
   d=pd.read_csv(file_path)
@@ -257,7 +257,7 @@ def scatter3d_needles_data(selected_patient, args):
   return res
 
 def scatter3d_needles(selected_patient, values, show_brain, brain_opacity):
-  brain = loadmat(brains_path+selected_patient+'.mat', squeeze_me=True)
+  brain = loadmat(brains_path+'.mat', squeeze_me=True)
   data=[]
   x=scatter3d_needles_data(selected_patient, values)
   for e in x:
@@ -312,7 +312,7 @@ def colored_dic(selected_patient, values):
 
 def scatter3d_color_needles(selected_patient, values, show_brain, brain_opacity):
   colored_data=colored_dic(selected_patient, values)
-  brain = loadmat(brains_path+selected_patient+'.mat', squeeze_me=True)
+  brain = loadmat(brains_path+'.mat', squeeze_me=True)
   d=[go.Scatter3d(
     x=[k for k in colored_data['x']],
     y=[k for k in colored_data['y']],

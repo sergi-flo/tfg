@@ -2,7 +2,7 @@
 
 URL where the app is being hosted:
 
-**[https://sergi-flo.duckdns.org/tfg/](https://sergi-flo.duckdns.org/tfg/)**
+**[https://sergiflo.duckdns.org/tfg/](https://sergiflo.duckdns.org/tfg/)**
 
 ### EXPLANATION
 
